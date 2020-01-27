@@ -34,6 +34,16 @@ namespace holdem_odds
 
             if (bestHand.type == Type.None)
             {
+                // Check for a straight flush
+                var straightFlush = GetStraightFlushCards(allCards);
+                if (straightFlush != null)
+                {
+                    bestHand.SetCards(straightFlush, Type.StraightFlush);
+                }
+            }
+
+            if (bestHand.type == Type.None)
+            {
                 // Check for a flush
                 var flush = GetFlushCards(allCards);
                 if (flush != null)
@@ -76,6 +86,12 @@ namespace holdem_odds
             }
 
             return allCards;
+        }
+
+        private static List<Card> GetStraightFlushCards(List<Card> allCards)
+        {
+            List<Card> straightFlushCards = GetStraightCards(allCards, true);
+            return straightFlushCards;
         }
 
         // If the player has a flush, returns the flushed cards. Otherwise, returns null.
@@ -134,7 +150,8 @@ namespace holdem_odds
             return suitedCards;
         }
 
-        private static List<Card> GetStraightCards(List<Card> allCards)
+        // Returns your highest straight cards if you've made a straight, otherwise returns null
+        private static List<Card> GetStraightCards(List<Card> allCards, bool requireStraightFlush = false)
         {
             List<Card> straightCards = null;
 

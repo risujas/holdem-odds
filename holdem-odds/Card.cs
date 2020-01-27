@@ -8,6 +8,7 @@ namespace holdem_odds
 	{
 		public enum Suit
 		{
+			NotSet,
 			Clubs,
 			Diamonds,
 			Hearts,
@@ -16,6 +17,7 @@ namespace holdem_odds
 
 		public enum Value
 		{
+			NotSet = 1,
 			V2 = 2,
 			V3 = 3,
 			V4 = 4,
@@ -33,5 +35,17 @@ namespace holdem_odds
 
 		public Suit suit;
 		public Value value;
+
+		public Card()
+		{
+			suit = Suit.NotSet;
+			value = Value.NotSet;
+		}
+
+		public Card(Suit s, Value v)
+		{
+			suit = s;
+			value = v;
+		}
 	}
 }

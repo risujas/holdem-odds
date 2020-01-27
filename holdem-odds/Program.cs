@@ -7,63 +7,63 @@ namespace holdem_odds
 	{
 		static void Main(string[] args)
 		{
-			while (true)
+			int totalHands = 0;
+			const int maxHands = 500000000;
+			const int updateInterval = 50000;
+
+			int totalFlushes = 0;
+			int totalStraights = 0;
+			int totalHighCards = 0;
+
+			while (totalHands < maxHands)
 			{
+				totalHands++;
+
 				Deck deck = new Deck();
 				deck.Shuffle();
 
 				List<Card> holeCards = new List<Card>();
-				holeCards.Add(deck.DrawNextCard());
-				holeCards.Add(deck.DrawNextCard());
-
-				Console.Write("Hole cards: ");
-
-				holeCards[0].SetConsoleColorToCardColor();
-				Console.Write(holeCards[0].GetHumanReadable());
-				holeCards[0].ResetConsoleColor();
-
-				Console.Write(" ");
-
-				holeCards[1].SetConsoleColorToCardColor();
-				Console.Write(holeCards[1].GetHumanReadable());
-				holeCards[1].ResetConsoleColor();
-
-				Console.WriteLine();
-				Console.Write("Table: ");
+				holeCards.Add(deck.DrawSpecificCard(Card.Suit.Diamonds, Card.Value.VJ));
+				holeCards.Add(deck.DrawSpecificCard(Card.Suit.Diamonds, Card.Value.VT));
 
 				List<Card> communityCards = new List<Card>();
-				for (int i = 0; i < 5; i++)
+				communityCards.Add(deck.DrawNextCard());
+				communityCards.Add(deck.DrawNextCard());
+				communityCards.Add(deck.DrawNextCard());
+				//communityCards.Add(deck.DrawNextCard());
+				//communityCards.Add(deck.DrawNextCard());
+
+				var bestHand = Hand.FindBest(holeCards, communityCards);
+				switch (bestHand.type)
 				{
-					var nextCard = deck.DrawNextCard();
-					communityCards.Add(nextCard);
-
-					nextCard.SetConsoleColorToCardColor();
-					Console.Write(nextCard.GetHumanReadable());
-					nextCard.ResetConsoleColor();
-
-					Console.Write(" ");
+					case Hand.Type.Flush:
+						totalFlushes++;
+						break;
+					case Hand.Type.Straight:
+						totalStraights++;
+						break;
+					case Hand.Type.HighCard:
+						totalHighCards++;
+						break;
 				}
 
-
-				var bh = Hand.FindBest(holeCards, communityCards);
-				if (bh.type != Hand.Type.None)
+				if (totalHands % updateInterval == 0)
 				{
-					Console.WriteLine();
-					Console.WriteLine("Hand: " + bh.type.ToString());
+					Console.Clear();
+					Console.WriteLine("Total hands: " + totalHands);
 
-					for (int i = 0; i < bh.cards.Count; i++)
-					{
-						bh.cards[i].SetConsoleColorToCardColor();
-						Console.Write(bh.cards[i].GetHumanReadable());
-						bh.cards[i].ResetConsoleColor();
-						Console.Write(" ");
-					}
+					float percent = totalFlushes / (float)totalHands * 100.0f;
+					Console.WriteLine("Total flushes: " + percent + "%");
 
-					Console.ReadLine();
+					percent = totalStraights / (float)totalHands * 100.0f;
+					Console.WriteLine("Total straights: " + percent + "%");
+
+					percent = totalHighCards / (float)totalHands * 100.0f;
+					Console.WriteLine("Total high cards: " + percent + "%");
 				}
-
-				Console.WriteLine("\n");
 			}
+
+			Console.ReadLine();
 		}
 	}
 }

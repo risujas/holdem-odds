@@ -17,11 +17,7 @@ namespace holdem_odds
 
 		public enum Value
 		{
-			NotSet = 1,
-
-			ValueMin = 2,
-			ValueMax = 14,
-
+			NotSet = 0,
 			V2 = 2,
 			V3 = 3,
 			V4 = 4,
@@ -38,7 +34,7 @@ namespace holdem_odds
 		}
 
 		public Suit suit { get; }
-		public Value value { get; }
+		public Value value { get; set; }
 
 		public Card(Suit s, Value v)
 		{

@@ -92,7 +92,7 @@ namespace holdem_odds
 
 		private void AddSuit(Card.Suit suit)
 		{
-			for (int i = (int)Card.Value.ValueMin; i <= (int)Card.Value.ValueMax; i++)
+			for (int i = (int)Card.Value.V2; i <= (int)Card.Value.VA; i++)
 			{
 				Card card = new Card(suit, (Card.Value)i);
 				cards.Add(card);

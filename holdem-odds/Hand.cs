@@ -20,8 +20,8 @@ namespace holdem_odds
 			StraightFlush
 		}
 
-		public Type type;
-		public List<Card> cards;
+		public Type type { get; private set; }
+		public List<Card> cards { get; private set; }
 
 		public static Hand FindBest(List<Card> holeCards, List<Card> communityCards)
 		{

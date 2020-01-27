@@ -6,7 +6,7 @@ namespace holdem_odds
 {
 	class Deck
 	{
-		public List<Card> cards = null;
+		private List<Card> cards = null;
 
 		public Deck()
 		{
@@ -22,6 +22,11 @@ namespace holdem_odds
 			AddSuit(Card.Suit.Diamonds);
 			AddSuit(Card.Suit.Hearts);
 			AddSuit(Card.Suit.Spades);
+		}
+
+		public void Shuffle()
+		{
+			// todo
 		}
 
 		public void PrintInfo()

@@ -14,6 +14,7 @@ namespace holdem_odds
 			int totalRoyalFlushes = 0;
 			int totalStraightFlushes = 0;
 			int totalFourOfAKind = 0;
+			int totalFullHouses = 0;
 			int totalFlushes = 0;
 			int totalStraights = 0;
 			int totalThreeOfAKind = 0;
@@ -51,6 +52,9 @@ namespace holdem_odds
 					case Hand.Type.FourOfAKind:
 						totalFourOfAKind++;
 						break;
+					case Hand.Type.FullHouse:
+						totalFullHouses++;
+						break;
 					case Hand.Type.Flush:
 						totalFlushes++;
 						break;
@@ -84,6 +88,9 @@ namespace holdem_odds
 
 					percent = totalFourOfAKind / (float)totalHands * 100.0f;
 					Console.WriteLine("Total quads: " + percent + "%");
+
+					percent = totalFullHouses / (float)totalHands * 100.0f;
+					Console.WriteLine("Total full houses: " + percent + "%");
 
 					percent = totalFlushes / (float)totalHands * 100.0f;
 					Console.WriteLine("Total flushes: " + percent + "%");

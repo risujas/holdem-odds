@@ -268,10 +268,30 @@ namespace holdem_odds
         private static List<Card> GetFullHouse(List<Card> allCards)
         {
             List<Card> fullHouse = null;
+            List<Card> trips = null;
+            List<Card> pair = null;
 
-            // todo
+            for (int i = (int)Card.Value.V2; i <= (int)Card.Value.VA; i++)
+            {
+                if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, (Card.Value)i) == 3)
+                {
+                    trips = GetCardsByValue(allCards, (Card.Value)i);
+                }
 
-            return null;
+                if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, (Card.Value)i) == 2)
+                {
+                    pair = GetCardsByValue(allCards, (Card.Value)i);
+                }
+            }
+
+            if (trips != null && pair != null)
+            {
+                fullHouse = new List<Card>();
+                fullHouse.AddRange(trips);
+                fullHouse.AddRange(pair);
+            }
+
+            return fullHouse;
         }
 
         // Returns the best 5-card flush hand from the available cards

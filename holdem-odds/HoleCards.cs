@@ -7,31 +7,18 @@ namespace holdem_odds
 {
 	class HoleCards
 	{
-		enum HandType
-		{
-			None,
-			HighCard,
-			OnePair,
-			TwoPair,
-			ThreeOfAKind,
-			Straight,
-			Flush,
-			FullHouse,
-			FourOfAKind,
-			StraightFlush
-		}
-
 		public Card holeCard1 = null;
 		public Card holeCard2 = null;
 
-		public List<Card> GetBestHand(List<Card> communityCards)
+		public Hand GetBestHand(List<Card> communityCards)
 		{
-			List<Card> bestHand = new List<Card>();
+			Hand bestHand = new Hand();
 
 			var flush = GetFlushCards(communityCards);
 			if (flush != null)
 			{
-				bestHand = flush;
+				bestHand.cards = flush;
+				bestHand.type = Hand.Type.Flush;
 			}
 
 			return bestHand;

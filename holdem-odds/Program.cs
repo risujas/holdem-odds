@@ -46,16 +46,16 @@ namespace holdem_odds
 
 
 				var bh = hand.GetBestHand(communityCards);
-				if (bh.Count > 0)
+				if (bh.type == Hand.Type.Flush)
 				{
 					Console.WriteLine();
 					Console.WriteLine("Hand: ");
 
-					for (int i = 0; i < bh.Count; i++)
+					for (int i = 0; i < bh.cards.Count; i++)
 					{
-						bh[i].SetConsoleColorToCardColor();
-						Console.Write(bh[i].GetHumanReadable());
-						bh[i].ResetConsoleColor();
+						bh.cards[i].SetConsoleColorToCardColor();
+						Console.Write(bh.cards[i].GetHumanReadable());
+						bh.cards[i].ResetConsoleColor();
 						Console.Write(" ");
 					}
 

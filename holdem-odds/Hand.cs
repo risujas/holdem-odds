@@ -65,29 +65,9 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for four of a kind
-                Card highestKicker = null;
-                List<Card> quads = new List<Card>();
-                bool found = false;
-
-                for (int i = 0; i < allCards.Count; i++)
+                var quads = GetFourOfAKindCards(allCards);
+                if (quads != null)
                 {
-                    if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, allCards[i].value) == 4)
-                    {
-                        quads.Add(GetMatchingCard(allCards, Card.Suit.Clubs, (Card.Value)i));
-                        quads.Add(GetMatchingCard(allCards, Card.Suit.Diamonds, (Card.Value)i));
-                        quads.Add(GetMatchingCard(allCards, Card.Suit.Hearts, (Card.Value)i));
-                        quads.Add(GetMatchingCard(allCards, Card.Suit.Spades, (Card.Value)i));
-                        found = true;
-                    }
-                    else
-                    {
-                        highestKicker = allCards[i];
-                    }
-                }
-
-                if (found)
-                {
-                    quads.Add(highestKicker);
                     bestHand.SetCards(quads, Type.FourOfAKind);
                 }
             }
@@ -216,6 +196,37 @@ namespace holdem_odds
             if (spadeStraightFlush != null)
             {
                 return spadeStraightFlush;
+            }
+
+            return null;
+        }
+
+        private static List<Card> GetFourOfAKindCards(List<Card> allCards)
+        {
+            Card highestKicker = null;
+            List<Card> quads = new List<Card>();
+            bool found = false;
+
+            for (int i = 0; i < allCards.Count; i++)
+            {
+                if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, allCards[i].value) == 4)
+                {
+                    quads.Add(GetMatchingCard(allCards, Card.Suit.Clubs, (Card.Value)i));
+                    quads.Add(GetMatchingCard(allCards, Card.Suit.Diamonds, (Card.Value)i));
+                    quads.Add(GetMatchingCard(allCards, Card.Suit.Hearts, (Card.Value)i));
+                    quads.Add(GetMatchingCard(allCards, Card.Suit.Spades, (Card.Value)i));
+                    found = true;
+                }
+                else
+                {
+                    highestKicker = allCards[i];
+                }
+            }
+
+            if (found)
+            {
+                quads.Add(highestKicker);
+                return quads;
             }
 
             return null;

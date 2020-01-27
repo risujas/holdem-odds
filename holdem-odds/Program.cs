@@ -16,6 +16,7 @@ namespace holdem_odds
 			int totalFourOfAKind = 0;
 			int totalFlushes = 0;
 			int totalStraights = 0;
+			int totalThreeOfAKind = 0;
 			int totalTwoPair = 0;
 			int totalOnePair = 0;
 			int totalHighCards = 0;
@@ -56,6 +57,9 @@ namespace holdem_odds
 					case Hand.Type.Straight:
 						totalStraights++;
 						break;
+					case Hand.Type.ThreeOfAKind:
+						totalThreeOfAKind++;
+						break;
 					case Hand.Type.TwoPair:
 						totalTwoPair++;
 						break;
@@ -86,6 +90,9 @@ namespace holdem_odds
 
 					percent = totalStraights / (float)totalHands * 100.0f;
 					Console.WriteLine("Total straights: " + percent + "%");
+
+					percent = totalThreeOfAKind / (float)totalHands * 100.0f;
+					Console.WriteLine("Total trips: " + percent + "%");
 
 					percent = totalTwoPair / (float)totalHands * 100.0f;
 					Console.WriteLine("Total two pair: " + percent + "%");

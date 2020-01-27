@@ -94,6 +94,16 @@ namespace holdem_odds
 
             if (bestHand.type == Type.None)
             {
+                // Check for three of a kind
+                var trips = GetThreeOfAKindCards(allCards);
+                if (trips != null)
+                {
+                    bestHand.SetCards(trips, Type.ThreeOfAKind);
+                }
+            }
+
+            if (bestHand.type == Type.None)
+            {
                 // Check for two pair
                 var twoPair = GetTwoPairCards(allCards);
                 if (twoPair != null)
@@ -361,6 +371,42 @@ namespace holdem_odds
             return straightCards;
         }
 
+        private static List<Card> GetThreeOfAKindCards(List<Card> allCards)
+        {
+            List<Card> trips = null;
+
+            for (int i = (int)Card.Value.V2; i <= (int)Card.Value.VA; i++)
+            {
+                if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, (Card.Value)i) == 3)
+                {
+                    trips = GetCardsByValue(allCards, (Card.Value)i);
+                }
+            }
+
+            if (trips != null)
+            {
+                List<Card> hand = new List<Card>();
+
+                List<Card> otherCards = allCards;
+                otherCards.Remove(trips[0]);
+                otherCards.Remove(trips[1]);
+                otherCards.Remove(trips[2]);
+
+                otherCards = otherCards.OrderBy(o => (int)o.value).ToList();
+                while (otherCards.Count > 2)
+                {
+                    otherCards.RemoveAt(0);
+                }
+
+                hand.AddRange(trips);
+                hand.AddRange(otherCards);
+
+                return hand;
+            }
+
+            return null;
+        }
+
         private static List<Card> GetTwoPairCards(List<Card> allCards)
         {
             List<Card> highPair = null;
@@ -386,8 +432,8 @@ namespace holdem_odds
                 otherCards.Remove(highPair[1]);
                 otherCards.Remove(lowPair[0]);
                 otherCards.Remove(lowPair[1]);
-                otherCards = otherCards.OrderBy(o => (int)o.value).ToList();
 
+                otherCards = otherCards.OrderBy(o => (int)o.value).ToList();
                 while (otherCards.Count > 1)
                 {
                     otherCards.RemoveAt(0);

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace holdem_odds
 {
-	class Hand
+	class HoleCards
 	{
 		enum Type
 		{

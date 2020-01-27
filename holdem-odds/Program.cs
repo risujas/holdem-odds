@@ -12,7 +12,7 @@ namespace holdem_odds
 				Deck deck = new Deck();
 				deck.Shuffle();
 
-				Hand hand = new Hand();
+				HoleCards hand = new HoleCards();
 				hand.holeCard1 = deck.DrawNextCard();
 				hand.holeCard2 = deck.DrawNextCard();
 

@@ -94,6 +94,26 @@ namespace holdem_odds
 
             if (bestHand.type == Type.None)
             {
+                // Check for two pair
+                var twoPair = GetTwoPairCards(allCards);
+                if (twoPair != null)
+                {
+                    bestHand.SetCards(twoPair, Type.TwoPair);
+                }
+            }
+
+            if (bestHand.type == Type.None)
+            {
+                // Check for one pair
+                var onePair = GetOnePairCards(allCards);
+                if (onePair != null)
+                {
+                    bestHand.SetCards(onePair, Type.OnePair);
+                }
+            }
+
+            if (bestHand.type == Type.None)
+            {
                 // Check for a high card
                 bestHand.SetCards(GetHighestCardsByValue(allCards), Type.HighCard);
             }
@@ -105,17 +125,6 @@ namespace holdem_odds
         {
             cards = c;
             type = t;
-        }
-
-        private static List<Card> GetHighestCardsByValue(List<Card> allCards)
-        {
-            allCards = allCards.OrderBy(o => (int)o.value).ToList();
-            while (allCards.Count > 5)
-            {
-                allCards.RemoveAt(0);
-            }
-
-            return allCards;
         }
 
         private static List<Card> GetRoyalFlushCards(List<Card> allCards)
@@ -237,25 +246,25 @@ namespace holdem_odds
         {
             List<Card> flushCards = null;
 
-            var clubs = GetSuitedCards(allCards, Card.Suit.Clubs);
+            var clubs = GetCardsBySuite(allCards, Card.Suit.Clubs);
             if (clubs.Count >= 5)
             {
                 flushCards = clubs;
             }
 
-            var diamonds = GetSuitedCards(allCards, Card.Suit.Diamonds);
+            var diamonds = GetCardsBySuite(allCards, Card.Suit.Diamonds);
             if (diamonds.Count >= 5)
             {
                 flushCards = diamonds;
             }
 
-            var hearts = GetSuitedCards(allCards, Card.Suit.Hearts);
+            var hearts = GetCardsBySuite(allCards, Card.Suit.Hearts);
             if (hearts.Count >= 5)
             {
                 flushCards = hearts;
             }
 
-            var spades = GetSuitedCards(allCards, Card.Suit.Spades);
+            var spades = GetCardsBySuite(allCards, Card.Suit.Spades);
             if (spades.Count >= 5)
             {
                 flushCards = spades;
@@ -273,7 +282,7 @@ namespace holdem_odds
             return flushCards;
         }
 
-        private static List<Card> GetSuitedCards(List<Card> allCards, Card.Suit suit)
+        private static List<Card> GetCardsBySuite(List<Card> allCards, Card.Suit suit)
         {
             List<Card> suitedCards = new List<Card>();
 
@@ -286,6 +295,21 @@ namespace holdem_odds
             }
 
             return suitedCards;
+        }
+
+        private static List<Card> GetCardsByValue(List<Card> allCards, Card.Value value)
+        {
+            List<Card> cardsOfValue = new List<Card>();
+
+            for (int i = 0; i < allCards.Count; i++)
+            {
+                if (allCards[i].value == value)
+                {
+                    cardsOfValue.Add(allCards[i]);
+                }
+            }
+
+            return cardsOfValue;
         }
 
         // Returns your highest straight cards if you've made a straight, otherwise returns null
@@ -335,6 +359,92 @@ namespace holdem_odds
             }
 
             return straightCards;
+        }
+
+        private static List<Card> GetTwoPairCards(List<Card> allCards)
+        {
+            List<Card> highPair = null;
+            List<Card> lowPair = null;
+
+            for (int i = (int)Card.Value.V2; i <= (int)Card.Value.VA; i++)
+            {
+                if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, (Card.Value)i) == 2)
+                {
+                    if (highPair != null)
+                    {
+                        lowPair = highPair;
+                    }
+
+                    highPair = GetCardsByValue(allCards, (Card.Value)i);
+                }
+            }
+
+            if (highPair != null && lowPair != null)
+            {
+                List<Card> otherCards = allCards;
+                otherCards.Remove(highPair[0]);
+                otherCards.Remove(highPair[1]);
+                otherCards.Remove(lowPair[0]);
+                otherCards.Remove(lowPair[1]);
+                otherCards = otherCards.OrderBy(o => (int)o.value).ToList();
+
+                while (otherCards.Count > 1)
+                {
+                    otherCards.RemoveAt(0);
+                }
+
+                List<Card> fullHand = new List<Card>();
+                fullHand.AddRange(highPair);
+                fullHand.AddRange(lowPair);
+                fullHand.AddRange(otherCards);
+                return otherCards;
+            }
+
+            return null;
+        }
+
+        private static List<Card> GetOnePairCards(List<Card> allCards)
+        {
+            List<Card> pair = new List<Card>();
+            bool found = false;
+
+            for (int i = 0; i < allCards.Count; i++)
+            {
+                if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, allCards[i].value) == 2)
+                {
+                    pair = GetCardsByValue(allCards, allCards[i].value);
+                    found = true;
+                }
+            }
+
+            if (found)
+            {
+                List<Card> otherCards = allCards;
+                otherCards.Remove(pair[0]);
+                otherCards.Remove(pair[1]);
+                otherCards = otherCards.OrderBy(o => (int)o.value).ToList();
+
+                while (otherCards.Count > 3)
+                {
+                    otherCards.RemoveAt(0);
+                }
+
+                pair.AddRange(otherCards);
+                return pair;
+            }
+
+            return null;
+        }
+
+        private static List<Card> GetHighestCardsByValue(List<Card> allCards)
+        {
+            allCards = allCards.OrderBy(o => (int)o.value).ToList();
+            while (allCards.Count > 5)
+            {
+                allCards.RemoveAt(0);
+            }
+
+            return allCards;
         }
 
         private static int GetNumberOfMatchingCards(List<Card> collection, Card.Suit suit, Card.Value value)

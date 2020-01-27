@@ -71,6 +71,16 @@ namespace holdem_odds
                     bestHand.SetCards(quads, Type.FourOfAKind);
                 }
             }
+
+            if (bestHand.type == Type.None)
+            {
+                // Check for a full house
+                var fullHouse = GetFullHouseCards(allCards);
+                if (fullHouse != null)
+                {
+                    bestHand.SetCards(fullHouse, Type.FullHouse);
+                }
+            }
             
             if (bestHand.type == Type.None)
             {
@@ -251,7 +261,11 @@ namespace holdem_odds
             return null;
         }
 
-        // If the player has a flush, returns the flushed cards. Otherwise, returns null.
+        private static List<Card> GetFullHouseCards(List<Card> allCards)
+        {
+
+        }
+
         private static List<Card> GetFlushCards(List<Card> allCards)
         {
             List<Card> flushCards = null;
@@ -322,7 +336,6 @@ namespace holdem_odds
             return cardsOfValue;
         }
 
-        // Returns your highest straight cards if you've made a straight, otherwise returns null
         private static List<Card> GetStraightCards(List<Card> allCards, Card.Suit suit = Card.Suit.NotSet)
         {
             List<Card> straightCards = null;

@@ -23,14 +23,11 @@ namespace holdem_odds
 		public Card holeCard1 = null;
 		public Card holeCard2 = null;
 
-		public bool GetBestHand(List<Card> communityCards)
+		public List<Card> GetBestHand(List<Card> communityCards)
 		{
-			if (GetFlushCards(communityCards) != null)
-			{
-				Console.WriteLine("Flush");
-				return true;
-			}
-			return false;
+			List<Card> bestHand = new List<Card>();
+
+			return bestHand;
 		}
 
 		// If the player has a flush, returns the flushed cards. Otherwise, returns null.

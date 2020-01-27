@@ -12,21 +12,21 @@ namespace holdem_odds
 				Deck deck = new Deck();
 				deck.Shuffle();
 
-				HoleCards hand = new HoleCards();
-				hand.holeCard1 = deck.DrawNextCard();
-				hand.holeCard2 = deck.DrawNextCard();
+				List<Card> holeCards = new List<Card>();
+				holeCards.Add(deck.DrawNextCard());
+				holeCards.Add(deck.DrawNextCard());
 
 				Console.Write("Hole cards: ");
 
-				hand.holeCard1.SetConsoleColorToCardColor();
-				Console.Write(hand.holeCard1.GetHumanReadable());
-				hand.holeCard1.ResetConsoleColor();
+				holeCards[0].SetConsoleColorToCardColor();
+				Console.Write(holeCards[0].GetHumanReadable());
+				holeCards[0].ResetConsoleColor();
 
 				Console.Write(" ");
 
-				hand.holeCard2.SetConsoleColorToCardColor();
-				Console.Write(hand.holeCard2.GetHumanReadable());
-				hand.holeCard2.ResetConsoleColor();
+				holeCards[1].SetConsoleColorToCardColor();
+				Console.Write(holeCards[1].GetHumanReadable());
+				holeCards[1].ResetConsoleColor();
 
 				Console.WriteLine();
 				Console.Write("Table: ");
@@ -45,7 +45,7 @@ namespace holdem_odds
 				}
 
 
-				var bh = hand.GetBestHand(communityCards);
+				var bh = Hand.FindBest(holeCards, communityCards);
 				if (bh.type == Hand.Type.Flush)
 				{
 					Console.WriteLine();

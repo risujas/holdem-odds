@@ -18,21 +18,38 @@ namespace holdem_odds
 				hand.holeCard1 = deck.DrawNextCard();
 				hand.holeCard2 = deck.DrawNextCard();
 
-				Console.WriteLine("Hole cards: " + hand.holeCard1.GetHumanReadable() + " " + hand.holeCard2.GetHumanReadable());
-				Console.Write("Table: ");
+				Console.Write("Hole cards: ");
+
+				hand.holeCard1.SetConsoleColorToCardColor();
+				Console.Write(hand.holeCard1.GetHumanReadable());
+				hand.holeCard1.ResetConsoleColor();
+
+				Console.Write(" ");
+
+				hand.holeCard2.SetConsoleColorToCardColor();
+				Console.Write(hand.holeCard2.GetHumanReadable());
+				hand.holeCard2.ResetConsoleColor();
+
+				Console.WriteLine();
 
 				List<Card> communityCards = new List<Card>();
 				for (int i = 0; i < 5; i++)
 				{
 					var nextCard = deck.DrawNextCard();
 					communityCards.Add(nextCard);
-					Console.Write(nextCard.GetHumanReadable() + " ");
+
+					nextCard.SetConsoleColorToCardColor();
+					Console.Write(nextCard.GetHumanReadable());
+					nextCard.ResetConsoleColor();
+
+					Console.Write(" ");
 				}
 
 				if (hand.GetBestHand(communityCards))
 				{
 					Console.Read();
 				}
+
 				Console.WriteLine("\n");
 			}
 		}

@@ -46,6 +46,36 @@ namespace holdem_odds
 			value = v;
 		}
 
+		public void SetConsoleColorToCardColor()
+		{
+			Console.BackgroundColor = ConsoleColor.White;
+
+			if (suit == Suit.Clubs)
+			{
+				Console.ForegroundColor = ConsoleColor.Green;
+			}
+
+			if (suit == Suit.Diamonds)
+			{
+				Console.ForegroundColor = ConsoleColor.Blue;
+			}
+
+			if (suit == Suit.Hearts)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+			}
+
+			if (suit == Suit.Spades)
+			{
+				Console.ForegroundColor = ConsoleColor.Black;
+			}
+		}
+
+		public void ResetConsoleColor()
+		{
+			Console.ResetColor();
+		}
+
 		public string GetHumanReadable()
 		{
 			if (value == Value.NotSet || suit == Suit.NotSet)

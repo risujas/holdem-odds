@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace holdem_odds
 {
@@ -27,39 +28,54 @@ namespace holdem_odds
 		{
 			List<Card> bestHand = new List<Card>();
 
+			var flush = GetFlushCards(communityCards);
+			if (flush != null)
+			{
+				bestHand = flush;
+			}
+
 			return bestHand;
 		}
 
 		// If the player has a flush, returns the flushed cards. Otherwise, returns null.
 		private List<Card> GetFlushCards(List<Card> communityCards)
 		{
-			List<Card> flushCards = new List<Card>();
+			List<Card> flushCards = null;
 
-			flushCards = GetSuitedCards(communityCards, Card.Suit.Clubs);
-			if (flushCards.Count >= 5)
+			var clubs = GetSuitedCards(communityCards, Card.Suit.Clubs);
+			if (clubs.Count >= 5)
 			{
-				return flushCards;
+				flushCards = clubs;
 			}
 
-			flushCards = GetSuitedCards(communityCards, Card.Suit.Diamonds);
-			if (flushCards.Count >= 5)
+			var diamonds = GetSuitedCards(communityCards, Card.Suit.Diamonds);
+			if (diamonds.Count >= 5)
 			{
-				return flushCards;
+				flushCards = diamonds;
 			}
 
-			flushCards = GetSuitedCards(communityCards, Card.Suit.Hearts);
-			if (flushCards.Count >= 5)
+			var hearts = GetSuitedCards(communityCards, Card.Suit.Hearts);
+			if (hearts.Count >= 5)
 			{
-				return flushCards;
+				flushCards = hearts;
 			}
 
-			flushCards = GetSuitedCards(communityCards, Card.Suit.Spades);
-			if (flushCards.Count >= 5)
+			var spades = GetSuitedCards(communityCards, Card.Suit.Spades);
+			if (spades.Count >= 5)
 			{
-				return flushCards;
+				flushCards = spades;
 			}
 
-			return null;
+			if (flushCards != null)
+			{
+				flushCards = flushCards.OrderBy(o => (int)o.value).ToList();
+				while (flushCards.Count > 5)
+				{
+					flushCards.RemoveAt(0);
+				}
+			}
+
+			return flushCards;
 		}
 
 		private List<Card> GetSuitedCards(List<Card> communityCards, Card.Suit suit)

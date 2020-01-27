@@ -44,9 +44,22 @@ namespace holdem_odds
 					Console.Write(" ");
 				}
 
-				if (hand.GetBestHand(communityCards))
+
+				var bh = hand.GetBestHand(communityCards);
+				if (bh.Count > 0)
 				{
-					Console.Read();
+					Console.WriteLine();
+					Console.WriteLine("Hand: ");
+
+					for (int i = 0; i < bh.Count; i++)
+					{
+						bh[i].SetConsoleColorToCardColor();
+						Console.Write(bh[i].GetHumanReadable());
+						bh[i].ResetConsoleColor();
+						Console.Write(" ");
+					}
+
+					Console.ReadLine();
 				}
 
 				Console.WriteLine("\n");

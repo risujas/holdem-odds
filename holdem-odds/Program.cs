@@ -7,8 +7,12 @@ namespace holdem_odds
 		static void Main(string[] args)
 		{
 			Deck deck = new Deck();
-			deck.PrintInfo();
-			Console.ReadLine();
+			//deck.PrintInfo();
+			while (true)
+			{
+				deck.DrawNextCard(true);
+				Console.ReadLine();
+			}
 		}
 	}
 }

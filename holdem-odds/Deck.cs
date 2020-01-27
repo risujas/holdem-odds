@@ -29,6 +29,24 @@ namespace holdem_odds
 			// todo
 		}
 
+		public Card DrawNextCard(bool printInfo = false)
+		{
+			if (cards == null || cards.Count == 0)
+			{
+				throw new InvalidOperationException("Couldn't draw a card because no cards remain in the deck.");
+			}
+
+			Card nextCard = cards[cards.Count - 1];
+			cards.Remove(nextCard);
+
+			if (printInfo)
+			{
+				Console.WriteLine(nextCard.GetHumanReadable() + " was drawn from the deck. " + cards.Count + " cards remain.");
+			}
+
+			return nextCard;
+		}
+
 		public void PrintInfo()
 		{
 			Console.WriteLine("Cards remaining in the deck: " + cards.Count);

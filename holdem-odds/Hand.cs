@@ -28,10 +28,14 @@ namespace holdem_odds
 		{
 			Hand bestHand = new Hand();
 
+			List<Card> allCards = new List<Card>();
+			allCards.AddRange(holeCards);
+			allCards.AddRange(communityCards);
+
 			if (bestHand.type == Type.None)
 			{
 				// Check for a flush
-				var flush = GetFlushCards(holeCards, communityCards);
+				var flush = GetFlushCards(allCards);
 				if (flush != null)
 				{
 					bestHand.SetCards(flush, Type.Flush);
@@ -40,12 +44,13 @@ namespace holdem_odds
 
 			if (bestHand.type == Type.None)
 			{
+
+			}
+
+			if (bestHand.type == Type.None)
+			{
 				// Check for a high card
-				List<Card> allCards = new List<Card>();
-				allCards.AddRange(holeCards);
-				allCards.AddRange(communityCards);
-				allCards = GetHighestCardsByValue(allCards);
-				bestHand.SetCards(allCards, Type.HighCard);
+				bestHand.SetCards(GetHighestCardsByValue(allCards), Type.HighCard);
 			}
 
 			return bestHand;
@@ -57,41 +62,41 @@ namespace holdem_odds
 			type = t;
 		}
 
-		private static List<Card> GetHighestCardsByValue(List<Card> cl)
+		private static List<Card> GetHighestCardsByValue(List<Card> allCards)
 		{
-			cl = cl.OrderBy(o => (int)o.value).ToList();
-			while (cl.Count > 5)
+			allCards = allCards.OrderBy(o => (int)o.value).ToList();
+			while (allCards.Count > 5)
 			{
-				cl.RemoveAt(0);
+				allCards.RemoveAt(0);
 			}
 
-			return cl;
+			return allCards;
 		}
 
 		// If the player has a flush, returns the flushed cards. Otherwise, returns null.
-		private static List<Card> GetFlushCards(List<Card> holeCards, List<Card> communityCards)
+		private static List<Card> GetFlushCards(List<Card> allCards)
 		{
 			List<Card> flushCards = null;
 
-			var clubs = GetSuitedCards(holeCards, communityCards, Card.Suit.Clubs);
+			var clubs = GetSuitedCards(allCards, Card.Suit.Clubs);
 			if (clubs.Count >= 5)
 			{
 				flushCards = clubs;
 			}
 
-			var diamonds = GetSuitedCards(holeCards, communityCards, Card.Suit.Diamonds);
+			var diamonds = GetSuitedCards(allCards, Card.Suit.Diamonds);
 			if (diamonds.Count >= 5)
 			{
 				flushCards = diamonds;
 			}
 
-			var hearts = GetSuitedCards(holeCards, communityCards, Card.Suit.Hearts);
+			var hearts = GetSuitedCards(allCards, Card.Suit.Hearts);
 			if (hearts.Count >= 5)
 			{
 				flushCards = hearts;
 			}
 
-			var spades = GetSuitedCards(holeCards, communityCards, Card.Suit.Spades);
+			var spades = GetSuitedCards(allCards, Card.Suit.Spades);
 			if (spades.Count >= 5)
 			{
 				flushCards = spades;
@@ -109,25 +114,15 @@ namespace holdem_odds
 			return flushCards;
 		}
 
-		private static List<Card> GetSuitedCards(List<Card> holeCards, List<Card> communityCards, Card.Suit suit)
+		private static List<Card> GetSuitedCards(List<Card> allCards, Card.Suit suit)
 		{
 			List<Card> suitedCards = new List<Card>();
 
-			if (holeCards[0].suit == suit)
+			for (int i = 0; i < allCards.Count; i++)
 			{
-				suitedCards.Add(holeCards[0]);
-			}
-
-			if (holeCards[1].suit == suit)
-			{
-				suitedCards.Add(holeCards[1]);
-			}
-
-			for (int i = 0; i < communityCards.Count; i++)
-			{
-				if (communityCards[i].suit == suit)
+				if (allCards[i].suit == suit)
 				{
-					suitedCards.Add(communityCards[i]);
+					suitedCards.Add(allCards[i]);
 				}
 			}
 

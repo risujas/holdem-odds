@@ -6,16 +6,7 @@ namespace holdem_odds
 	{
 		static void Main(string[] args)
 		{
-			Deck deck = new Deck();
-			deck.Shuffle();
-
-			//deck.PrintInfo();
-
-			while (true)
-			{
-				deck.DrawNextCard(true);
-				Console.ReadLine();
-			}
+			Tests.TestCardRandomness(10000, 1000);
 		}
 	}
 }

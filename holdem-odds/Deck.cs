@@ -16,7 +16,6 @@ namespace holdem_odds
 
 		public void Reset()
 		{
-			cards = null;
 			cards = new List<Card>();
 
 			AddSuit(Card.Suit.Clubs);

@@ -45,7 +45,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for a royal flush
-                var royalFlush = GetRoyalFlushCards(allCards);
+                var royalFlush = GetRoyalFlush(allCards);
                 if (royalFlush != null)
                 {
                     bestHand.SetCards(royalFlush, Type.RoyalFlush);
@@ -55,7 +55,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for a straight flush
-                var straightFlush = GetStraightFlushCards(allCards);
+                var straightFlush = GetStraightFlush(allCards);
                 if (straightFlush != null)
                 {
                     bestHand.SetCards(straightFlush, Type.StraightFlush);
@@ -65,7 +65,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for four of a kind
-                var quads = GetFourOfAKindCards(allCards);
+                var quads = GetFourOfAKind(allCards);
                 if (quads != null)
                 {
                     bestHand.SetCards(quads, Type.FourOfAKind);
@@ -75,7 +75,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for a full house
-                var fullHouse = GetFullHouseCards(allCards);
+                var fullHouse = GetFullHouse(allCards);
                 if (fullHouse != null)
                 {
                     bestHand.SetCards(fullHouse, Type.FullHouse);
@@ -85,7 +85,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for a flush
-                var flush = GetFlushCards(allCards);
+                var flush = GetFlush(allCards);
                 if (flush != null)
                 {
                     bestHand.SetCards(flush, Type.Flush);
@@ -95,7 +95,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for a straight
-                var straight = GetStraightCards(allCards, Card.Suit.NotSet);
+                var straight = GetStraight(allCards, Card.Suit.NotSet);
                 if (straight != null)
                 {
                     bestHand.SetCards(straight, Type.Straight);
@@ -105,7 +105,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for three of a kind
-                var trips = GetThreeOfAKindCards(allCards);
+                var trips = GetThreeOfAKind(allCards);
                 if (trips != null)
                 {
                     bestHand.SetCards(trips, Type.ThreeOfAKind);
@@ -115,7 +115,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for two pair
-                var twoPair = GetTwoPairCards(allCards);
+                var twoPair = GetTwoPair(allCards);
                 if (twoPair != null)
                 {
                     bestHand.SetCards(twoPair, Type.TwoPair);
@@ -125,7 +125,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for one pair
-                var onePair = GetOnePairCards(allCards);
+                var onePair = GetOnePair(allCards);
                 if (onePair != null)
                 {
                     bestHand.SetCards(onePair, Type.OnePair);
@@ -135,7 +135,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for a high card
-                bestHand.SetCards(GetHighestCardsByValue(allCards), Type.HighCard);
+                bestHand.SetCards(GetHighCard(allCards), Type.HighCard);
             }
 
             return bestHand;
@@ -147,7 +147,8 @@ namespace holdem_odds
             type = t;
         }
 
-        private static List<Card> GetRoyalFlushCards(List<Card> allCards)
+        // Returns the best 5-card royal flush hand from the available cards
+        private static List<Card> GetRoyalFlush(List<Card> allCards)
         {
             List<Card> royalFlushCards = null;
             List<Card> selection;
@@ -201,27 +202,28 @@ namespace holdem_odds
             return null;
         }
 
-        private static List<Card> GetStraightFlushCards(List<Card> allCards)
+        // Returns the best 5-card straight flush hand from the available cards
+        private static List<Card> GetStraightFlush(List<Card> allCards)
         {
-            List<Card> clubStraightFlush = GetStraightCards(allCards, Card.Suit.Clubs);
+            List<Card> clubStraightFlush = GetStraight(allCards, Card.Suit.Clubs);
             if (clubStraightFlush != null)
             {
                 return clubStraightFlush;
             }
 
-            List<Card> diamondStraightFlush = GetStraightCards(allCards, Card.Suit.Diamonds);
+            List<Card> diamondStraightFlush = GetStraight(allCards, Card.Suit.Diamonds);
             if (diamondStraightFlush != null)
             {
                 return diamondStraightFlush;
             }
 
-            List<Card> heartStraightFlush = GetStraightCards(allCards, Card.Suit.Hearts);
+            List<Card> heartStraightFlush = GetStraight(allCards, Card.Suit.Hearts);
             if (heartStraightFlush != null)
             {
                 return heartStraightFlush;
             }
 
-            List<Card> spadeStraightFlush = GetStraightCards(allCards, Card.Suit.Spades);
+            List<Card> spadeStraightFlush = GetStraight(allCards, Card.Suit.Spades);
             if (spadeStraightFlush != null)
             {
                 return spadeStraightFlush;
@@ -230,7 +232,8 @@ namespace holdem_odds
             return null;
         }
 
-        private static List<Card> GetFourOfAKindCards(List<Card> allCards)
+        // Returns the best 5-card four of a kind hand from the available cards
+        private static List<Card> GetFourOfAKind(List<Card> allCards)
         {
             Card highestKicker = null;
             List<Card> quads = new List<Card>();
@@ -261,12 +264,18 @@ namespace holdem_odds
             return null;
         }
 
-        private static List<Card> GetFullHouseCards(List<Card> allCards)
+        // Returns the best 5-card full house hand from the available cards
+        private static List<Card> GetFullHouse(List<Card> allCards)
         {
+            List<Card> fullHouse = null;
 
+            // todo
+
+            return null;
         }
 
-        private static List<Card> GetFlushCards(List<Card> allCards)
+        // Returns the best 5-card flush hand from the available cards
+        private static List<Card> GetFlush(List<Card> allCards)
         {
             List<Card> flushCards = null;
 
@@ -306,37 +315,8 @@ namespace holdem_odds
             return flushCards;
         }
 
-        private static List<Card> GetCardsBySuite(List<Card> allCards, Card.Suit suit)
-        {
-            List<Card> suitedCards = new List<Card>();
-
-            for (int i = 0; i < allCards.Count; i++)
-            {
-                if (allCards[i].suit == suit)
-                {
-                    suitedCards.Add(allCards[i]);
-                }
-            }
-
-            return suitedCards;
-        }
-
-        private static List<Card> GetCardsByValue(List<Card> allCards, Card.Value value)
-        {
-            List<Card> cardsOfValue = new List<Card>();
-
-            for (int i = 0; i < allCards.Count; i++)
-            {
-                if (allCards[i].value == value)
-                {
-                    cardsOfValue.Add(allCards[i]);
-                }
-            }
-
-            return cardsOfValue;
-        }
-
-        private static List<Card> GetStraightCards(List<Card> allCards, Card.Suit suit = Card.Suit.NotSet)
+        // Returns the best 5-card straight hand from the available cards
+        private static List<Card> GetStraight(List<Card> allCards, Card.Suit suit = Card.Suit.NotSet)
         {
             List<Card> straightCards = null;
             List<Card> selection = new List<Card>();
@@ -384,7 +364,8 @@ namespace holdem_odds
             return straightCards;
         }
 
-        private static List<Card> GetThreeOfAKindCards(List<Card> allCards)
+        // Returns the best 5-card three of a kind hand from the available cards
+        private static List<Card> GetThreeOfAKind(List<Card> allCards)
         {
             List<Card> trips = null;
 
@@ -420,7 +401,8 @@ namespace holdem_odds
             return null;
         }
 
-        private static List<Card> GetTwoPairCards(List<Card> allCards)
+        // Returns the best 5-card two pair hand from the available cards
+        private static List<Card> GetTwoPair(List<Card> allCards)
         {
             List<Card> highPair = null;
             List<Card> lowPair = null;
@@ -462,7 +444,8 @@ namespace holdem_odds
             return null;
         }
 
-        private static List<Card> GetOnePairCards(List<Card> allCards)
+        // Returns the best 5-card one pair hand from the available cards
+        private static List<Card> GetOnePair(List<Card> allCards)
         {
             List<Card> pair = new List<Card>();
             bool found = false;
@@ -495,7 +478,8 @@ namespace holdem_odds
             return null;
         }
 
-        private static List<Card> GetHighestCardsByValue(List<Card> allCards)
+        // Returns the best 5-card high card hand from the available cards
+        private static List<Card> GetHighCard(List<Card> allCards)
         {
             allCards = allCards.OrderBy(o => (int)o.value).ToList();
             while (allCards.Count > 5)
@@ -551,6 +535,36 @@ namespace holdem_odds
             }
 
             return card;
+        }
+
+        private static List<Card> GetCardsBySuite(List<Card> allCards, Card.Suit suit)
+        {
+            List<Card> suitedCards = new List<Card>();
+
+            for (int i = 0; i < allCards.Count; i++)
+            {
+                if (allCards[i].suit == suit)
+                {
+                    suitedCards.Add(allCards[i]);
+                }
+            }
+
+            return suitedCards;
+        }
+
+        private static List<Card> GetCardsByValue(List<Card> allCards, Card.Value value)
+        {
+            List<Card> cardsOfValue = new List<Card>();
+
+            for (int i = 0; i < allCards.Count; i++)
+            {
+                if (allCards[i].value == value)
+                {
+                    cardsOfValue.Add(allCards[i]);
+                }
+            }
+
+            return cardsOfValue;
         }
     }
 }

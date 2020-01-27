@@ -6,7 +6,7 @@ namespace holdem_odds
 {
 	class Hand
 	{
-		public Card card1 = new Card();
-		public Card card2 = new Card();
+		public Card card1 = null;
+		public Card card2 = null;
 	}
 }

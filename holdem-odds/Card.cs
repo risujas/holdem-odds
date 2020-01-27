@@ -18,6 +18,10 @@ namespace holdem_odds
 		public enum Value
 		{
 			NotSet = 1,
+
+			ValueMin = 2,
+			ValueMax = 14,
+
 			V2 = 2,
 			V3 = 3,
 			V4 = 4,
@@ -40,6 +44,58 @@ namespace holdem_odds
 		{
 			suit = s;
 			value = v;
+		}
+
+		public string GetHumanReadable()
+		{
+			string name = "";
+
+			if ((int)value >= 2 && (int)value <= 9)
+			{
+				name += (int)value;
+			}
+			else
+			{
+				switch (value)
+				{
+					case Value.VT:
+						name += "T";
+						break;
+					case Value.VJ:
+						name += "J";
+						break;
+					case Value.VQ:
+						name += "Q";
+						break;
+					case Value.VK:
+						name += "K";
+						break;
+					case Value.VA:
+						name += "A";
+						break;
+				}
+			}
+
+			switch (suit)
+			{
+				case Suit.Clubs:
+					name += "c";
+					break;
+
+				case Suit.Diamonds:
+					name += "d";
+					break;
+
+				case Suit.Hearts:
+					name += "h";
+					break;
+
+				case Suit.Spades:
+					name += "s";
+					break;
+			}
+
+			return name;
 		}
 	}
 }

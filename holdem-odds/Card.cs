@@ -33,14 +33,8 @@ namespace holdem_odds
 			VA = 14
 		}
 
-		public Suit suit;
-		public Value value;
-
-		public Card()
-		{
-			suit = Suit.NotSet;
-			value = Value.NotSet;
-		}
+		public Suit suit { get; }
+		public Value value { get; }
 
 		public Card(Suit s, Value v)
 		{

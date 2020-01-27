@@ -21,7 +21,6 @@ namespace holdem_odds
 				totalHands++;
 
 				Deck deck = new Deck();
-				deck.Reset();
 				deck.Shuffle();
 
 				List<Card> holeCards = new List<Card>();
@@ -51,20 +50,6 @@ namespace holdem_odds
 						totalHighCards++;
 						break;
 				}
-
-				/*
-				Console.Write(holeCards[0].GetHumanReadable() + " " + holeCards[1].GetHumanReadable() + " - ");
-				for (int i = 0; i < communityCards.Count; i++)
-				{
-					Console.Write(communityCards[i].GetHumanReadable() + " ");
-				}
-				Console.Write(" - ");
-				for(int i = 0; i < bestHand.cards.Count; i++)
-				{
-					Console.Write(bestHand.cards[i].GetHumanReadable() + " ");
-				}
-				Console.ReadLine();
-				*/
 
 				if (totalHands % updateInterval == 0)
 				{

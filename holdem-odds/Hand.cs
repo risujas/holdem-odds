@@ -50,7 +50,7 @@ namespace holdem_odds
                     bestHand.SetCards(straightFlush, Type.StraightFlush);
                 }
             }
-
+            
             if (bestHand.type == Type.None)
             {
                 // Check for a flush
@@ -64,7 +64,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for a straight
-                var straight = GetStraightCards(allCards);
+                var straight = GetStraightCards(allCards, Card.Suit.NotSet);
                 if (straight != null)
                 {
                     bestHand.SetCards(straight, Type.Straight);
@@ -185,7 +185,8 @@ namespace holdem_odds
         // Returns your highest straight cards if you've made a straight, otherwise returns null
         private static List<Card> GetStraightCards(List<Card> allCards, Card.Suit suit = Card.Suit.NotSet)
         {
-            List<Card> straightCards = new List<Card>();
+            List<Card> straightCards = null;
+            List<Card> selection = new List<Card>();
 
             if (    GetNumberOfMatchingCards(allCards, suit, Card.Value.VA) > 0 &&
                     GetNumberOfMatchingCards(allCards, suit, Card.Value.V2) > 0 &&
@@ -193,14 +194,14 @@ namespace holdem_odds
                     GetNumberOfMatchingCards(allCards, suit, Card.Value.V4) > 0 &&
                     GetNumberOfMatchingCards(allCards, suit, Card.Value.V5) > 0)
             {
-                straightCards.Add(GetMatchingCard(allCards, suit, Card.Value.VA));
-                straightCards.Add(GetMatchingCard(allCards, suit, Card.Value.V2));
-                straightCards.Add(GetMatchingCard(allCards, suit, Card.Value.V3));
-                straightCards.Add(GetMatchingCard(allCards, suit, Card.Value.V4));
-                straightCards.Add(GetMatchingCard(allCards, suit, Card.Value.V5));
+                selection.Add(GetMatchingCard(allCards, suit, Card.Value.VA));
+                selection.Add(GetMatchingCard(allCards, suit, Card.Value.V2));
+                selection.Add(GetMatchingCard(allCards, suit, Card.Value.V3));
+                selection.Add(GetMatchingCard(allCards, suit, Card.Value.V4));
+                selection.Add(GetMatchingCard(allCards, suit, Card.Value.V5));
             }
 
-            for (int i = 0; i < allCards.Count - 1; i++)
+            for (int i = 0; i < allCards.Count; i++)
             {
                 if (allCards[i].suit != suit && suit != Card.Suit.NotSet)
                 {
@@ -212,19 +213,19 @@ namespace holdem_odds
                     GetNumberOfMatchingCards(allCards, suit, allCards[i].value + 3) > 0 &&
                     GetNumberOfMatchingCards(allCards, suit, allCards[i].value + 4) > 0 )
                 {
-                    straightCards.Clear();
+                    selection.Clear();
 
-                    straightCards.Add(allCards[i]);
-                    straightCards.Add(GetMatchingCard(allCards, suit, allCards[i].value + 1));
-                    straightCards.Add(GetMatchingCard(allCards, suit, allCards[i].value + 2));
-                    straightCards.Add(GetMatchingCard(allCards, suit, allCards[i].value + 3));
-                    straightCards.Add(GetMatchingCard(allCards, suit, allCards[i].value + 4));
+                    selection.Add(allCards[i]);
+                    selection.Add(GetMatchingCard(allCards, suit, allCards[i].value + 1));
+                    selection.Add(GetMatchingCard(allCards, suit, allCards[i].value + 2));
+                    selection.Add(GetMatchingCard(allCards, suit, allCards[i].value + 3));
+                    selection.Add(GetMatchingCard(allCards, suit, allCards[i].value + 4));
                 }
             }
 
-            if (straightCards.Count == 0)
+            if (selection.Count != 0)
             {
-                return null;
+                straightCards = selection;
             }
 
             return straightCards;

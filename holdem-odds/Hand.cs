@@ -24,6 +24,15 @@ namespace holdem_odds
         public Type type { get; private set; }
         public List<Card> cards { get; private set; }
 
+        public string GetHumanReadable()
+        {
+            return cards[0].GetHumanReadable() + " " + 
+                   cards[1].GetHumanReadable() + " " + 
+                   cards[2].GetHumanReadable() + " " + 
+                   cards[3].GetHumanReadable() + " " + 
+                   cards[4].GetHumanReadable();
+        }
+
         public static Hand FindBest(List<Card> holeCards, List<Card> communityCards)
         {
             Hand bestHand = new Hand();
@@ -90,8 +99,31 @@ namespace holdem_odds
 
         private static List<Card> GetStraightFlushCards(List<Card> allCards)
         {
-            List<Card> straightFlushCards = GetStraightCards(allCards, true);
-            return straightFlushCards;
+            List<Card> clubStraightFlush = GetStraightCards(allCards, Card.Suit.Clubs);
+            if (clubStraightFlush != null)
+            {
+                return clubStraightFlush;
+            }
+
+            List<Card> diamondStraightFlush = GetStraightCards(allCards, Card.Suit.Diamonds);
+            if (diamondStraightFlush != null)
+            {
+                return diamondStraightFlush;
+            }
+
+            List<Card> heartStraightFlush = GetStraightCards(allCards, Card.Suit.Hearts);
+            if (heartStraightFlush != null)
+            {
+                return heartStraightFlush;
+            }
+
+            List<Card> spadeStraightFlush = GetStraightCards(allCards, Card.Suit.Spades);
+            if (spadeStraightFlush != null)
+            {
+                return spadeStraightFlush;
+            }
+
+            return null;
         }
 
         // If the player has a flush, returns the flushed cards. Otherwise, returns null.
@@ -151,60 +183,98 @@ namespace holdem_odds
         }
 
         // Returns your highest straight cards if you've made a straight, otherwise returns null
-        private static List<Card> GetStraightCards(List<Card> allCards, bool requireStraightFlush = false)
+        private static List<Card> GetStraightCards(List<Card> allCards, Card.Suit suit = Card.Suit.NotSet)
         {
-            List<Card> straightCards = null;
+            List<Card> straightCards = new List<Card>();
 
-            List<Card> sortedAll = allCards.OrderBy(o => (int)o.value).ToList();
-            sortedAll = sortedAll.GroupBy(x => x.value).Select(x => x.First()).ToList();
-
-            int straightStartIndex = 0;
-            bool hasStraight = false;
-            bool aceThroughFive = false;
-
-            for (int i = 0; i <= sortedAll.Count - 5; i++)
+            if (    GetNumberOfMatchingCards(allCards, suit, Card.Value.VA) > 0 &&
+                    GetNumberOfMatchingCards(allCards, suit, Card.Value.V2) > 0 &&
+                    GetNumberOfMatchingCards(allCards, suit, Card.Value.V3) > 0 &&
+                    GetNumberOfMatchingCards(allCards, suit, Card.Value.V4) > 0 &&
+                    GetNumberOfMatchingCards(allCards, suit, Card.Value.V5) > 0)
             {
-                if  (
-                    (int)sortedAll[i + 0].value + 1 == (int)sortedAll[i + 1].value &&
-                    (int)sortedAll[i + 1].value + 1 == (int)sortedAll[i + 2].value &&
-                    (int)sortedAll[i + 2].value + 1 == (int)sortedAll[i + 3].value &&
-                    (int)sortedAll[i + 3].value + 1 == (int)sortedAll[i + 4].value
-                    )
+                straightCards.Add(GetMatchingCard(allCards, suit, Card.Value.VA));
+                straightCards.Add(GetMatchingCard(allCards, suit, Card.Value.V2));
+                straightCards.Add(GetMatchingCard(allCards, suit, Card.Value.V3));
+                straightCards.Add(GetMatchingCard(allCards, suit, Card.Value.V4));
+                straightCards.Add(GetMatchingCard(allCards, suit, Card.Value.V5));
+            }
+
+            for (int i = 0; i < allCards.Count - 1; i++)
+            {
+                if (allCards[i].suit != suit && suit != Card.Suit.NotSet)
                 {
-                    straightStartIndex = i;
-                    hasStraight = true;
+                    continue;
+                }
+
+                if  ( GetNumberOfMatchingCards(allCards, suit, allCards[i].value + 1) > 0 &&
+                    GetNumberOfMatchingCards(allCards, suit, allCards[i].value + 2) > 0 &&
+                    GetNumberOfMatchingCards(allCards, suit, allCards[i].value + 3) > 0 &&
+                    GetNumberOfMatchingCards(allCards, suit, allCards[i].value + 4) > 0 )
+                {
+                    straightCards.Clear();
+
+                    straightCards.Add(allCards[i]);
+                    straightCards.Add(GetMatchingCard(allCards, suit, allCards[i].value + 1));
+                    straightCards.Add(GetMatchingCard(allCards, suit, allCards[i].value + 2));
+                    straightCards.Add(GetMatchingCard(allCards, suit, allCards[i].value + 3));
+                    straightCards.Add(GetMatchingCard(allCards, suit, allCards[i].value + 4));
                 }
             }
 
-            if (!hasStraight)
+            if (straightCards.Count == 0)
             {
-                if  (
-                    sortedAll[sortedAll.Count - 1].value == Card.Value.VA && 
-                    sortedAll[0].value == Card.Value.V2 &&
-                    sortedAll[1].value == Card.Value.V3 &&
-                    sortedAll[2].value == Card.Value.V4 &&
-                    sortedAll[3].value == Card.Value.V5 
-                    )
-                {
-                    aceThroughFive = true;
-                    hasStraight = true;
-                }
-            }
-
-            if (hasStraight)
-            {
-                if (aceThroughFive)
-                {
-                    straightCards = sortedAll.GetRange(0, 4);
-                    straightCards.Add(sortedAll[sortedAll.Count - 1]);
-                }
-                else
-                {
-                    straightCards = sortedAll.GetRange(straightStartIndex, 5);
-                }
+                return null;
             }
 
             return straightCards;
+        }
+
+        private static int GetNumberOfMatchingCards(List<Card> collection, Card.Suit suit, Card.Value value)
+        {
+            if (collection == null || collection.Count == 0)
+            {
+                throw new ArgumentException("GetNumberOfMatchingCards: collection was null or empty");
+            }
+
+            int num = 0;
+
+            for (int i = 0; i < collection.Count; i++)
+            {
+                if (
+                    ((value == Card.Value.NotSet) || (collection[i].value == value)) &&
+                    ((suit == Card.Suit.NotSet) || (collection[i].suit == suit))
+                    )
+                {
+                    num++;
+                }
+            }
+
+            return num;
+        }
+
+        private static Card GetMatchingCard(List<Card> collection, Card.Suit suit, Card.Value value)
+        {
+            if (collection == null || collection.Count == 0)
+            {
+                throw new ArgumentException("GetMatchingCard: collection was null or empty");
+            }
+
+            Card card = null;
+
+            for (int i = 0; i < collection.Count; i++)
+            {
+                if  ( 
+                    (collection[i].value == value || value == Card.Value.NotSet) && 
+                    (collection[i].suit == suit || suit == Card.Suit.NotSet)
+                    )
+                {
+                    card = collection[i];
+                    break;
+                }
+            }
+
+            return card;
         }
     }
 }

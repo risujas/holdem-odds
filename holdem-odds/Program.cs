@@ -6,7 +6,7 @@ namespace holdem_odds
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
+			
 		}
 	}
 }

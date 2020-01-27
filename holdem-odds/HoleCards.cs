@@ -6,7 +6,7 @@ namespace holdem_odds
 {
 	class HoleCards
 	{
-		enum Type
+		enum HandType
 		{
 			None,
 			HighCard,

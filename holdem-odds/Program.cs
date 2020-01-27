@@ -9,8 +9,6 @@ namespace holdem_odds
 		{
 			while (true)
 			{
-				//Console.Clear();
-
 				Deck deck = new Deck();
 				deck.Shuffle();
 
@@ -31,6 +29,7 @@ namespace holdem_odds
 				hand.holeCard2.ResetConsoleColor();
 
 				Console.WriteLine();
+				Console.Write("Table: ");
 
 				List<Card> communityCards = new List<Card>();
 				for (int i = 0; i < 5; i++)

@@ -52,17 +52,17 @@ namespace holdem_odds
 
 			if (suit == Suit.Clubs)
 			{
-				Console.ForegroundColor = ConsoleColor.Green;
+				Console.ForegroundColor = ConsoleColor.DarkGreen;
 			}
 
 			if (suit == Suit.Diamonds)
 			{
-				Console.ForegroundColor = ConsoleColor.Blue;
+				Console.ForegroundColor = ConsoleColor.DarkBlue;
 			}
 
 			if (suit == Suit.Hearts)
 			{
-				Console.ForegroundColor = ConsoleColor.Red;
+				Console.ForegroundColor = ConsoleColor.DarkRed;
 			}
 
 			if (suit == Suit.Spades)
@@ -76,7 +76,7 @@ namespace holdem_odds
 			Console.ResetColor();
 		}
 
-		public string GetHumanReadable()
+		public string GetHumanReadable(bool includeSuit = true)
 		{
 			if (value == Value.NotSet || suit == Suit.NotSet)
 			{
@@ -111,23 +111,26 @@ namespace holdem_odds
 				}
 			}
 
-			switch (suit)
+			if (includeSuit)
 			{
-				case Suit.Clubs:
-					name += "c";
-					break;
+				switch (suit)
+				{
+					case Suit.Clubs:
+						name += "c";
+						break;
 
-				case Suit.Diamonds:
-					name += "d";
-					break;
+					case Suit.Diamonds:
+						name += "d";
+						break;
 
-				case Suit.Hearts:
-					name += "h";
-					break;
+					case Suit.Hearts:
+						name += "h";
+						break;
 
-				case Suit.Spades:
-					name += "s";
-					break;
+					case Suit.Spades:
+						name += "s";
+						break;
+				}
 			}
 
 			return name;

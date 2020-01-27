@@ -6,7 +6,12 @@ namespace holdem_odds
 	{
 		static void Main(string[] args)
 		{
-			Tests.TestCardRandomness(10000, 1000);
+			Deck deck = new Deck();
+			deck.Reset();
+			deck.Shuffle();
+
+			deck.DrawSpecificCard(Card.Suit.Hearts, Card.Value.V5, true);
+			Console.Read();
 		}
 	}
 }

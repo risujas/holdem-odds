@@ -48,6 +48,11 @@ namespace holdem_odds
 
 		public string GetHumanReadable()
 		{
+			if (value == Value.NotSet || suit == Suit.NotSet)
+			{
+				throw new InvalidOperationException("Couldn't get a human-readable name for the card: card data not set");
+			}
+
 			string name = "";
 
 			if ((int)value >= 2 && (int)value <= 9)

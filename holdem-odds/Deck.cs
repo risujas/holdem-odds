@@ -34,7 +34,7 @@ namespace holdem_odds
 		{
 			if (cards == null || cards.Count == 0)
 			{
-				throw new InvalidOperationException("Couldn't draw a card because no cards remain in the deck.");
+				throw new InvalidOperationException("Couldn't draw a card because the deck is empty or invalid.");
 			}
 
 			Card nextCard = cards[cards.Count - 1];
@@ -46,6 +46,38 @@ namespace holdem_odds
 			}
 
 			return nextCard;
+		}
+
+		public Card DrawSpecificCard(Card.Suit suit, Card.Value value, bool printInfo = false)
+		{
+			Card card = new Card(suit, value);
+
+			if (cards == null || cards.Count == 0)
+			{
+				throw new InvalidOperationException("Couldn't draw the specified card " + card.GetHumanReadable() + " because the deck is empty or invalid.");
+			}
+
+			bool found = false;
+			for (int i = 0; i < cards.Count; i++)
+			{
+				if (cards[i].suit == suit && cards[i].value == value)
+				{
+					cards.Remove(cards[i]);
+					found = true;
+				}
+			}
+
+			if (!found)
+			{
+				throw new InvalidOperationException("Couldn't draw the specified card " + card.GetHumanReadable() + " because it doesn't exist in the deck.");
+			}
+
+			if (printInfo)
+			{
+				Console.WriteLine(card.GetHumanReadable() + " was drawn from the deck. " + cards.Count + " cards remain.");
+			}
+
+			return card;
 		}
 
 		public void PrintInfo()

@@ -46,10 +46,10 @@ namespace holdem_odds
 
 
 				var bh = Hand.FindBest(holeCards, communityCards);
-				if (bh.type == Hand.Type.Flush)
+				if (bh.type != Hand.Type.None)
 				{
 					Console.WriteLine();
-					Console.WriteLine("Hand: ");
+					Console.WriteLine("Hand: " + bh.type.ToString());
 
 					for (int i = 0; i < bh.cards.Count; i++)
 					{

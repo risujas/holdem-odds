@@ -9,6 +9,7 @@ namespace holdem_odds
     {
 		public enum Type
 		{
+			None,
 			HighCard,
 			OnePair,
 			TwoPair,
@@ -27,14 +28,44 @@ namespace holdem_odds
 		{
 			Hand bestHand = new Hand();
 
-			var flush = GetFlushCards(holeCards, communityCards);
-			if (flush != null)
+			if (bestHand.type == Type.None)
 			{
-				bestHand.cards = flush;
-				bestHand.type = Hand.Type.Flush;
+				// Check for a flush
+				var flush = GetFlushCards(holeCards, communityCards);
+				if (flush != null)
+				{
+					bestHand.SetCards(flush, Type.Flush);
+				}
+			}
+
+			if (bestHand.type == Type.None)
+			{
+				// Check for a high card
+				List<Card> allCards = new List<Card>();
+				allCards.AddRange(holeCards);
+				allCards.AddRange(communityCards);
+				allCards = GetHighestCardsByValue(allCards);
+				bestHand.SetCards(allCards, Type.HighCard);
 			}
 
 			return bestHand;
+		}
+
+		private void SetCards(List<Card> c, Type t)
+		{
+			cards = c;
+			type = t;
+		}
+
+		private static List<Card> GetHighestCardsByValue(List<Card> cl)
+		{
+			cl = cl.OrderBy(o => (int)o.value).ToList();
+			while (cl.Count > 5)
+			{
+				cl.RemoveAt(0);
+			}
+
+			return cl;
 		}
 
 		// If the player has a flush, returns the flushed cards. Otherwise, returns null.

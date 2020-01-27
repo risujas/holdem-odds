@@ -11,6 +11,7 @@ namespace holdem_odds
 			const int maxHands = 500000000;
 			const int updateInterval = 50000;
 
+			int totalRoyalFlushes = 0;
 			int totalStraightFlushes = 0;
 			int totalFlushes = 0;
 			int totalStraights = 0;
@@ -37,6 +38,9 @@ namespace holdem_odds
 				var bestHand = Hand.FindBest(holeCards, communityCards);
 				switch (bestHand.type)
 				{
+					case Hand.Type.RoyalFlush:
+						totalRoyalFlushes++;
+						break;
 					case Hand.Type.StraightFlush:
 						totalStraightFlushes++;
 						break;
@@ -56,7 +60,10 @@ namespace holdem_odds
 					Console.Clear();
 					Console.WriteLine("Total hands: " + totalHands);
 
-					float percent = totalStraightFlushes / (float)totalHands * 100.0f;
+					float percent = totalRoyalFlushes / (float)totalHands * 100.0f;
+					Console.WriteLine("Total royal flushes: " + percent + "%");
+
+					percent = totalStraightFlushes / (float)totalHands * 100.0f;
 					Console.WriteLine("Total straight flushes: " + percent + "%");
 
 					percent = totalFlushes / (float)totalHands * 100.0f;

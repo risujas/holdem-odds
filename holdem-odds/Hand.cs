@@ -18,7 +18,8 @@ namespace holdem_odds
             Flush,
             FullHouse,
             FourOfAKind,
-            StraightFlush
+            StraightFlush,
+            RoyalFlush
         }
 
         public Type type { get; private set; }
@@ -40,6 +41,16 @@ namespace holdem_odds
             List<Card> allCards = new List<Card>();
             allCards.AddRange(holeCards);
             allCards.AddRange(communityCards);
+
+            if (bestHand.type == Type.None)
+            {
+                // Check for a royal flush
+                var royalFlush = GetRoyalFlushCards(allCards);
+                if (royalFlush != null)
+                {
+                    bestHand.SetCards(royalFlush, Type.RoyalFlush);
+                }
+            }
 
             if (bestHand.type == Type.None)
             {
@@ -95,6 +106,60 @@ namespace holdem_odds
             }
 
             return allCards;
+        }
+
+        private static List<Card> GetRoyalFlushCards(List<Card> allCards)
+        {
+            List<Card> royalFlushCards = null;
+            List<Card> selection;
+
+            selection = GetRoyalFlushBySuit(allCards, Card.Suit.Clubs);
+            if (selection != null)
+            {
+                royalFlushCards = selection;
+            }
+
+            selection = GetRoyalFlushBySuit(allCards, Card.Suit.Diamonds);
+            if (selection != null)
+            {
+                royalFlushCards = selection;
+            }
+
+            selection = GetRoyalFlushBySuit(allCards, Card.Suit.Hearts);
+            if (selection != null)
+            {
+                royalFlushCards = selection;
+            }
+
+            selection = GetRoyalFlushBySuit(allCards, Card.Suit.Spades);
+            if (selection != null)
+            {
+                royalFlushCards = selection;
+            }
+
+            return royalFlushCards;
+        }
+
+        private static List<Card> GetRoyalFlushBySuit(List<Card> allCards, Card.Suit suit)
+        {
+            if (GetNumberOfMatchingCards(allCards, suit, Card.Value.VT) == 1 &&
+                GetNumberOfMatchingCards(allCards, suit, Card.Value.VJ) == 1 &&
+                GetNumberOfMatchingCards(allCards, suit, Card.Value.VQ) == 1 &&
+                GetNumberOfMatchingCards(allCards, suit, Card.Value.VK) == 1 &&
+                GetNumberOfMatchingCards(allCards, suit, Card.Value.VA) == 1)
+            {
+                List<Card> royalFlushCards = new List<Card>();
+
+                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.VT));
+                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.VJ));
+                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.VQ));
+                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.VK));
+                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.VA));
+
+                return royalFlushCards;
+            }
+
+            return null;
         }
 
         private static List<Card> GetStraightFlushCards(List<Card> allCards)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace holdem_odds
@@ -26,7 +27,8 @@ namespace holdem_odds
 
 		public void Shuffle()
 		{
-			// todo
+			Random random = new Random();
+			cards = cards.OrderBy(x => random.Next()).ToList();
 		}
 
 		public Card DrawNextCard(bool printInfo = false)

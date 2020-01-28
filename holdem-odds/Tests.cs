@@ -33,22 +33,46 @@ namespace holdem_odds
 
 				Console.Clear();
 
-				Console.WriteLine("Player 1: " + p1Cards[0].GetHumanReadable() + " " + p1Cards[1].GetHumanReadable());
-				Console.WriteLine("Player 2: " + p2Cards[0].GetHumanReadable() + " " + p2Cards[1].GetHumanReadable());
+				Console.Write("Player 1: ");
+				p1Cards[0].SetConsoleColorToCardColor();
+				Console.Write(p1Cards[0].GetHumanReadable());
+				p1Cards[1].ResetConsoleColor();
+				Console.Write(" ");
+				p1Cards[1].SetConsoleColorToCardColor();
+				Console.Write(p1Cards[1].GetHumanReadable());
+				p1Cards[1].ResetConsoleColor();
+
 				Console.WriteLine();
 
-				Console.Write("Table: ");
+				Console.Write("Player 2: ");
+				p2Cards[0].SetConsoleColorToCardColor();
+				Console.Write(p2Cards[0].GetHumanReadable());
+				p2Cards[1].ResetConsoleColor();
+				Console.Write(" ");
+				p2Cards[1].SetConsoleColorToCardColor();
+				Console.Write(p2Cards[1].GetHumanReadable());
+				p2Cards[1].ResetConsoleColor();
+
+				Console.WriteLine();
+				Console.WriteLine();
+
+				Console.Write("Table:    ");
 				for (int i = 0; i < communityCards.Count; i++)
 				{
-					Console.Write(communityCards[i].GetHumanReadable() + " ");
+					communityCards[i].SetConsoleColorToCardColor();
+					Console.Write(communityCards[i].GetHumanReadable());
+					communityCards[i].ResetConsoleColor();
+					Console.Write(" ");
 				}
-				Console.WriteLine("\n");
+
+				Console.WriteLine();
+				Console.WriteLine();
 
 				Console.Write("Player 1: ");
-				p1Hand.PrintHumanReadable(true, true, true);
+				p1Hand.PrintHumanReadable(false, true, true);
 
 				Console.Write("Player 2: ");
-				p2Hand.PrintHumanReadable(true, true, true);
+				p2Hand.PrintHumanReadable(false, true, true);
 
 				Console.WriteLine();
 
@@ -222,8 +246,8 @@ namespace holdem_odds
 				}
 			}
 
-			var sortedDict = from entry in drawnCards orderby entry.Value descending select entry;
-			foreach (var k in sortedDict)
+			drawnCards = drawnCards.OrderBy(x => x.Value).ToDictionary(pair => pair.Key, pair => pair.Value);
+			foreach (var k in drawnCards)
 			{
 				float percent = (k.Value / (float)totalDraws) * 100.0f;
 				Console.WriteLine(k.Key + " - " + percent);

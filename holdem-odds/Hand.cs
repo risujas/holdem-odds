@@ -32,6 +32,7 @@ namespace holdem_odds
 
         public Type type { get; private set; }
         public List<Card> cards { get; private set; }
+        // add maincards and fillercards for tie breakups
 
         public string GetHumanReadable()
         {

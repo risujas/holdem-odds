@@ -55,19 +55,64 @@ namespace holdem_odds
 
 		public string GetCardValueString(bool plural)
 		{
+			string s = "";
+
+			switch (value)
+			{
+				case Value.V2:
+					s = "Deuce";
+					break;
+				case Value.V3:
+					s = "Three";
+					break;
+				case Value.V4:
+					s = "Four";
+					break;
+				case Value.V5:
+					s = "Five";
+					break;
+				case Value.V6:
+					s = "Six";
+					break;
+				case Value.V7:
+					s = "Seven";
+					break;
+				case Value.V8:
+					s = "Eight";
+					break;
+				case Value.V9:
+					s = "Nine";
+					break;
+				case Value.VT:
+					s = "Ten";
+					break;
+				case Value.VJ:
+					s = "Jack";
+					break;
+				case Value.VQ:
+					s = "Queen";
+					break;
+				case Value.VK:
+					s = "King";
+					break;
+				case Value.VA:
+					s = "Ace";
+					break;
+			}
+
 			if (plural)
 			{
 				if (value == Value.V6)
 				{
-					return value.ToString() + "es";
+					s += "es";
 				}
 				else
 				{
-					return value.ToString() + "s";
+					s += "s";
 				}
 			}
 
-			return value.ToString();
+			return s;
 		}
 
 		public string GetCardValueStringShort()

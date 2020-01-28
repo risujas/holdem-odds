@@ -58,7 +58,10 @@ namespace holdem_odds
 
             if (type == Type.FourOfAKind)
             {
-                name = "Four of a kind, " + cardTiers[0][0].GetCardValueString(true);
+                name = "Four of a kind, " + cardTiers[0][0].GetCardValueString(true) + 
+                    " - " + 
+                    cardTiers[1][0].GetCardValueStringShort() + 
+                    " kicker";
             }
 
             if (type == Type.FullHouse)
@@ -78,22 +81,40 @@ namespace holdem_odds
 
             if (type == Type.ThreeOfAKind)
             {
-                name = "Three of a kind, " + cardTiers[0][0].GetCardValueString(true);
+                name = "Three of a kind, " + cardTiers[0][0].GetCardValueString(true) + 
+                    " - " + 
+                    cardTiers[1][0].GetCardValueStringShort() + 
+                    cardTiers[2][0].GetCardValueStringShort() + 
+                    " kickers";
             }
 
             if (type == Type.TwoPair)
             {
-                name = "Two pairs, " + cardTiers[0][0].GetCardValueString(true) + " and " + cardTiers[1][0].GetCardValueString(true);
+                name = "Two pairs, " + cardTiers[0][0].GetCardValueString(true) + " and " + cardTiers[1][0].GetCardValueString(true) + 
+                    " - " +
+                    cardTiers[2][0].GetCardValueStringShort() + 
+                    " kicker";
             }
 
             if (type == Type.OnePair)
             {
-                name = "A pair of " + cardTiers[0][0].GetCardValueString(true);
+                name = "A pair of " + cardTiers[0][0].GetCardValueString(true) + 
+                    " - " +
+                    cardTiers[1][0].GetCardValueStringShort() + 
+                    cardTiers[2][0].GetCardValueStringShort() + 
+                    cardTiers[3][0].GetCardValueStringShort() + 
+                    " kickers";
             }
 
             if (type == Type.HighCard)
             {
-                name = cardTiers[0][0].GetCardValueString(false) + " high";
+                name = cardTiers[0][0].GetCardValueString(false) + " high" + 
+                    " - " +
+                    cardTiers[1][0].GetCardValueStringShort() + 
+                    cardTiers[2][0].GetCardValueStringShort() +
+                    cardTiers[3][0].GetCardValueStringShort() + 
+                    cardTiers[4][0].GetCardValueStringShort() + 
+                    " kickers";
             }
 
             return name;

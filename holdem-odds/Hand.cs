@@ -90,7 +90,7 @@ namespace holdem_odds
 
             if (type == Type.TwoPair)
             {
-                name = "Two pairs, " + cardTiers[0][0].GetCardValueString(true) + " and " + cardTiers[1][0].GetCardValueString(true) + 
+                name = "Two pair, " + cardTiers[0][0].GetCardValueString(true) + " and " + cardTiers[1][0].GetCardValueString(true) + 
                     " - " +
                     cardTiers[2][0].GetCardValueStringShort() + 
                     " kicker";

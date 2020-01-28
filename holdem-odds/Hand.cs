@@ -235,30 +235,36 @@ namespace holdem_odds
         // Returns the best 5-card four of a kind hand from the available cards
         private static List<Card> GetFourOfAKind(List<Card> allCards)
         {
-            Card highestKicker = null;
-            List<Card> quads = new List<Card>();
-            bool found = false;
+            List<Card> quads = null;
 
-            for (int i = 0; i < allCards.Count; i++)
+            for (int i = (int)Card.Value.V2; i <= (int)Card.Value.VA; i++)
             {
-                if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, allCards[i].value) == 4)
+                if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, (Card.Value)i) == 4)
                 {
-                    quads.Add(GetMatchingCard(allCards, Card.Suit.Clubs, (Card.Value)i));
-                    quads.Add(GetMatchingCard(allCards, Card.Suit.Diamonds, (Card.Value)i));
-                    quads.Add(GetMatchingCard(allCards, Card.Suit.Hearts, (Card.Value)i));
-                    quads.Add(GetMatchingCard(allCards, Card.Suit.Spades, (Card.Value)i));
-                    found = true;
-                }
-                else
-                {
-                    highestKicker = allCards[i];
+                    quads = GetCardsByValue(allCards, (Card.Value)i);
                 }
             }
 
-            if (found)
+            if (quads != null)
             {
-                quads.Add(highestKicker);
-                return quads;
+                List<Card> hand = new List<Card>();
+
+                List<Card> otherCards = allCards;
+                otherCards.Remove(quads[0]);
+                otherCards.Remove(quads[1]);
+                otherCards.Remove(quads[2]);
+                otherCards.Remove(quads[3]);
+
+                otherCards = otherCards.OrderBy(o => (int)o.value).ToList();
+                while (otherCards.Count > 1)
+                {
+                    otherCards.RemoveAt(0);
+                }
+
+                hand.AddRange(quads);
+                hand.AddRange(otherCards);
+
+                return hand;
             }
 
             return null;
@@ -277,8 +283,7 @@ namespace holdem_odds
                 {
                     trips = GetCardsByValue(allCards, (Card.Value)i);
                 }
-
-                if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, (Card.Value)i) == 2)
+                else if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, (Card.Value)i) == 2)
                 {
                     pair = GetCardsByValue(allCards, (Card.Value)i);
                 }

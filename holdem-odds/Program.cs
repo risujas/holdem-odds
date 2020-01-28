@@ -7,7 +7,7 @@ namespace holdem_odds
 	{
 		static void Main(string[] args)
 		{
-			Tests.TestFrequencies(5000000, 100000, 5);
+			Tests.TestGame();
 		}
 	}
 }

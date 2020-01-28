@@ -31,8 +31,8 @@ namespace holdem_odds
         }
 
         public Type type { get; private set; }
-        public List<Card> cards { get; private set; }
-        // add maincards and fillercards for tie breakups
+        public List<Card> mainCards { get; private set; }
+        public List<Card> fillerCards { get; private set; }
 
         public Hand()
         {
@@ -43,13 +43,49 @@ namespace holdem_odds
             FindBest(holeCards, communityCards);
         }
 
-        public string GetHumanReadable()
+        public bool HasFillerCards()
         {
-            return cards[0].GetHumanReadable() + " " + 
-                   cards[1].GetHumanReadable() + " " + 
-                   cards[2].GetHumanReadable() + " " + 
-                   cards[3].GetHumanReadable() + " " + 
-                   cards[4].GetHumanReadable();
+            if (fillerCards != null)
+            {
+                if (fillerCards.Count != 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public string GetHumanReadable(bool plusSeparator = true, bool realName = true)
+        {
+            string s = "";
+            for (int i = 0; i < mainCards.Count; i++)
+            {
+                s += mainCards[i].GetHumanReadable();
+                s += " ";
+            }
+
+            if (HasFillerCards())
+            {
+                if (plusSeparator)
+                {
+                    s += "+ ";
+                }
+
+                for (int i = 0; i < fillerCards.Count; i++)
+                {
+                    s += fillerCards[i].GetHumanReadable();
+                    s += " ";
+                }
+            }
+
+            if (realName)
+            {
+                s += "(" + type.ToString() + ")";
+            }
+
+            s = s.Trim();
+
+            return s;
         }
 
         public ShowdownResult EvaluateAgainst(Hand other)
@@ -81,104 +117,96 @@ namespace holdem_odds
 
             if (type == Type.None)
             {
-                // Check for a royal flush
-                var royalFlush = GetRoyalFlush(allCards.ToList());
-                if (royalFlush != null)
+                var hand = GetRoyalFlush(allCards.ToList());
+                if (hand != null)
                 {
-                    SetCards(royalFlush, Type.RoyalFlush);
+                    SetCards(hand, null, Type.RoyalFlush);
                 }
             }
 
             if (type == Type.None)
             {
-                // Check for a straight flush
-                var straightFlush = GetStraightFlush(allCards.ToList());
-                if (straightFlush != null)
+                var hand = GetStraightFlush(allCards.ToList());
+                if (hand != null)
                 {
-                    SetCards(straightFlush, Type.StraightFlush);
+                    SetCards(hand, null, Type.StraightFlush);
                 }
             }
 
             if (type == Type.None)
             {
-                // Check for four of a kind
-                var quads = GetSeries(allCards.ToList(), 4);
-                if (quads != null)
+                var hand = GetSeries(allCards.ToList(), 4);
+                if (hand != null)
                 {
-                    SetCards(quads, Type.FourOfAKind);
+                    SetCards(hand.GetRange(0, 4), hand.GetRange(4, 1), Type.FourOfAKind);
                 }
             }
 
             if (type == Type.None)
             {
-                // Check for a full house
-                var fullHouse = GetFullHouse(allCards.ToList());
-                if (fullHouse != null)
+                var hand = GetFullHouse(allCards.ToList());
+                if (hand != null)
                 {
-                    SetCards(fullHouse, Type.FullHouse);
+                    SetCards(hand.GetRange(0, 3), hand.GetRange(3, 2), Type.FullHouse);
                 }
             }
             
             if (type == Type.None)
             {
-                // Check for a flush
-                var flush = GetFlush(allCards.ToList());
-                if (flush != null)
+                var hand = GetFlush(allCards.ToList());
+                if (hand != null)
                 {
-                    SetCards(flush, Type.Flush);
+                    SetCards(hand, null, Type.Flush);
                 }
             }
 
             if (type == Type.None)
             {
-                // Check for a straight
-                var straight = GetStraight(allCards.ToList(), Card.Suit.NotSet);
-                if (straight != null)
+                var hand = GetStraight(allCards.ToList(), Card.Suit.NotSet);
+                if (hand != null)
                 {
-                    SetCards(straight, Type.Straight);
+                    SetCards(hand, null, Type.Straight);
                 }
             }
 
             if (type == Type.None)
             {
-                // Check for three of a kind
-                var trips = GetSeries(allCards.ToList(), 3);
-                if (trips != null)
+                var hand = GetSeries(allCards.ToList(), 3);
+                if (hand != null)
                 {
-                    SetCards(trips, Type.ThreeOfAKind);
+                    SetCards(hand.GetRange(0, 3), hand.GetRange(3, 2), Type.ThreeOfAKind);
                 }
             }
 
             if (type == Type.None)
             {
-                // Check for two pair
-                var twoPair = GetTwoPair(allCards.ToList());
-                if (twoPair != null)
+                var hand = GetTwoPair(allCards.ToList());
+                if (hand != null)
                 {
-                    SetCards(twoPair, Type.TwoPair);
+                    SetCards(hand.GetRange(0, 2), hand.GetRange(2, 3), Type.TwoPair);
                 }
             }
 
             if (type == Type.None)
             {
-                // Check for one pair
-                var onePair = GetSeries(allCards.ToList(), 2);
-                if (onePair != null)
+                var hand = GetSeries(allCards.ToList(), 2);
+                if (hand != null)
                 {
-                    SetCards(onePair, Type.OnePair);
+                    SetCards(hand.GetRange(0, 2), hand.GetRange(2, 3), Type.OnePair);
                 }
             }
 
             if (type == Type.None)
             {
-                // Check for a high card
-                SetCards(GetHighCard(allCards.ToList()), Type.HighCard);
+                var hand = GetHighCard(allCards.ToList());
+                SetCards(hand.GetRange(0, 1), hand.GetRange(1, 4), Type.HighCard);
             }
         }
 
-        private void SetCards(List<Card> c, Type t)
+        private void SetCards(List<Card> mc, List<Card> fc, Type t)
         {
-            cards = c;
+            mainCards = mc;
+            fillerCards = fc;
             type = t;
         }
 

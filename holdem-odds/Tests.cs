@@ -44,19 +44,9 @@ namespace holdem_odds
 				}
 				Console.WriteLine("\n");
 
-				Console.Write("Player 1: ");
-				for (int i = 0; i < p1Hand.cards.Count; i++)
-				{
-					Console.Write(p1Hand.cards[i].GetHumanReadable() + " ");
-				}
-				Console.WriteLine(p1Hand.type.ToString());
+				Console.WriteLine("Player 1: " + p1Hand.GetHumanReadable());
+				Console.WriteLine("Player 2: " + p2Hand.GetHumanReadable());
 
-				Console.Write("Player 2: ");
-				for (int i = 0; i < p2Hand.cards.Count; i++)
-				{
-					Console.Write(p2Hand.cards[i].GetHumanReadable() + " ");
-				}
-				Console.WriteLine(p2Hand.type.ToString());
 				Console.WriteLine();
 
 				Hand.ShowdownResult result = p1Hand.EvaluateAgainst(p2Hand);

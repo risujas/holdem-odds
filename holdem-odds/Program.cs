@@ -10,7 +10,7 @@ namespace holdem_odds
 			Deck deck = new Deck();
 
 			int totalHands = 0;
-			const long maxHands = 5000000000;
+			const long maxHands = 5000000;
 			const int updateInterval = 50000;
 
 			int totalRoyalFlushes = 0;
@@ -38,8 +38,8 @@ namespace holdem_odds
 				communityCards.Add(deck.DrawNextCard());
 				communityCards.Add(deck.DrawNextCard());
 				communityCards.Add(deck.DrawNextCard());
-				communityCards.Add(deck.DrawNextCard());
-				communityCards.Add(deck.DrawNextCard());
+				//communityCards.Add(deck.DrawNextCard());
+				//communityCards.Add(deck.DrawNextCard());
 
 				var bestHand = Hand.FindBest(holeCards, communityCards);
 				switch (bestHand.type)

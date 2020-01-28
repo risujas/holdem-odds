@@ -31,11 +31,7 @@ namespace holdem_odds
         }
 
         public Type type { get; private set; }
-        public List<Card> tier1Cards { get; private set; }
-        public List<Card> tier2Cards { get; private set; }
-        public List<Card> tier3Cards { get; private set; }
-        public List<Card> tier4Cards { get; private set; }
-        public List<Card> tier5Cards { get; private set; }
+        public List<List<Card>> cardTiers = new List<List<Card>>();
 
         public Hand()
         {
@@ -46,38 +42,25 @@ namespace holdem_odds
             FindBest(holeCards, communityCards);
         }
 
-        public bool HasFillerCards()
-        {
-            if (tier2Cards != null)
-            {
-                if (tier2Cards.Count != 0)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         public string GetHumanReadable(bool plusSeparator = true, bool realName = true)
         {
+            Console.WriteLine(type.ToString()); // todo
+
             string s = "";
-            for (int i = 0; i < tier1Cards.Count; i++)
-            {
-                s += tier1Cards[i].GetHumanReadable();
-                s += " ";
-            }
 
-            if (HasFillerCards())
+            for (int tier = 0; tier < cardTiers.Count; tier++)
             {
-                if (plusSeparator)
+                for (int card = 0; card < cardTiers[tier].Count; card++)
                 {
-                    s += "+ ";
-                }
-
-                for (int i = 0; i < tier2Cards.Count; i++)
-                {
-                    s += tier2Cards[i].GetHumanReadable();
+                    s += cardTiers[tier][card].GetHumanReadable();
                     s += " ";
+                }
+                if (tier != cardTiers.Count - 1)
+                {
+                    if (plusSeparator)
+                    {
+                        s += "+ ";
+                    }
                 }
             }
 
@@ -93,25 +76,19 @@ namespace holdem_odds
 
         public void PrintHumanReadable(bool plusSeparator = true, bool realName = true, bool newLine = true)
         {
-            string humanReadable = GetHumanReadable(plusSeparator, realName);
-
-            foreach (var mc in tier1Cards)
+            for (int tier = 0; tier < cardTiers.Count; tier++)
             {
-                mc.PrintHumanReadable(true);
-                Console.Write(" ");
-            }
-
-            if (HasFillerCards())
-            {
-                if (plusSeparator)
+                for (int card = 0; card < cardTiers[tier].Count; card++)
                 {
-                    Console.Write("+ ");
-                }
-
-                foreach (var fc in tier2Cards)
-                {
-                    fc.PrintHumanReadable(true);
+                    cardTiers[tier][card].PrintHumanReadable();
                     Console.Write(" ");
+                }
+                if (tier != cardTiers.Count - 1)
+                {
+                    if (plusSeparator)
+                    {
+                        Console.Write("+ ");
+                    }
                 }
             }
 
@@ -158,7 +135,7 @@ namespace holdem_odds
                 var hand = GetRoyalFlush(allCards.ToList());
                 if (hand != null)
                 {
-                    SetCards(hand, null, Type.RoyalFlush);
+                    SetCards(Type.RoyalFlush, hand);
                 }
             }
 
@@ -167,7 +144,7 @@ namespace holdem_odds
                 var hand = GetStraightFlush(allCards.ToList());
                 if (hand != null)
                 {
-                    SetCards(hand, null, Type.StraightFlush);
+                    SetCards(Type.StraightFlush, hand);
                 }
             }
 
@@ -176,7 +153,7 @@ namespace holdem_odds
                 var hand = GetSeries(allCards.ToList(), 4);
                 if (hand != null)
                 {
-                    SetCards(hand.GetRange(0, 4), hand.GetRange(4, 1), Type.FourOfAKind);
+                    SetCards(Type.FourOfAKind, hand.GetRange(0, 4), hand.GetRange(4, 1));
                 }
             }
 
@@ -185,7 +162,7 @@ namespace holdem_odds
                 var hand = GetFullHouse(allCards.ToList());
                 if (hand != null)
                 {
-                    SetCards(hand.GetRange(0, 3), hand.GetRange(3, 2), Type.FullHouse);
+                    SetCards(Type.FullHouse, hand.GetRange(0, 3), hand.GetRange(3, 2));
                 }
             }
             
@@ -194,7 +171,7 @@ namespace holdem_odds
                 var hand = GetFlush(allCards.ToList());
                 if (hand != null)
                 {
-                    SetCards(hand, null, Type.Flush);
+                    SetCards(Type.Flush, hand);
                 }
             }
 
@@ -203,7 +180,7 @@ namespace holdem_odds
                 var hand = GetStraight(allCards.ToList(), Card.Suit.NotSet);
                 if (hand != null)
                 {
-                    SetCards(hand, null, Type.Straight);
+                    SetCards(Type.Straight, hand);
                 }
             }
 
@@ -212,7 +189,7 @@ namespace holdem_odds
                 var hand = GetSeries(allCards.ToList(), 3);
                 if (hand != null)
                 {
-                    SetCards(hand.GetRange(0, 3), hand.GetRange(3, 2), Type.ThreeOfAKind);
+                    SetCards(Type.ThreeOfAKind, hand.GetRange(0, 3), hand.GetRange(3, 1), hand.GetRange(4, 1));
                 }
             }
 
@@ -221,7 +198,7 @@ namespace holdem_odds
                 var hand = GetTwoPair(allCards.ToList());
                 if (hand != null)
                 {
-                    SetCards(hand.GetRange(0, 2), hand.GetRange(2, 3), Type.TwoPair);
+                    SetCards(Type.TwoPair, hand.GetRange(0, 2), hand.GetRange(2, 2), hand.GetRange(4, 1));
                 }
             }
 
@@ -230,22 +207,43 @@ namespace holdem_odds
                 var hand = GetSeries(allCards.ToList(), 2);
                 if (hand != null)
                 {
-                    SetCards(hand.GetRange(0, 2), hand.GetRange(2, 3), Type.OnePair);
+                    SetCards(Type.OnePair, hand.GetRange(0, 2), hand.GetRange(2, 1), hand.GetRange(3, 1), hand.GetRange(4, 1));
                 }
             }
 
             if (type == Type.None)
             {
                 var hand = GetHighCard(allCards.ToList());
-                SetCards(hand.GetRange(0, 1), hand.GetRange(1, 4), Type.HighCard);
+                SetCards(Type.HighCard, hand.GetRange(0, 1), hand.GetRange(1, 1), hand.GetRange(2, 1), hand.GetRange(3, 1), hand.GetRange(4, 1));
             }
         }
 
-        private void SetCards(List<Card> mc, List<Card> fc, Type t)
+        private void SetCards(Type t, List<Card> t1c, List<Card> t2c = null, List<Card> t3c = null, List<Card> t4c = null, List<Card> t5c = null)
         {
-            tier1Cards = mc;
-            tier2Cards = fc;
             type = t;
+
+            cardTiers.Clear();
+
+            if (t1c != null)
+            {
+                cardTiers.Add(t1c);
+            }
+            if (t2c != null)
+            {
+                cardTiers.Add(t2c);
+            }
+            if (t3c != null)
+            {
+                cardTiers.Add(t3c);
+            }
+            if (t4c != null)
+            {
+                cardTiers.Add(t4c);
+            }
+            if (t5c != null)
+            {
+                cardTiers.Add(t5c);
+            }
         }
 
         private List<Card> GetRoyalFlush(List<Card> allCards)

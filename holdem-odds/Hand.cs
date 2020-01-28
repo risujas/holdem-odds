@@ -42,7 +42,7 @@ namespace holdem_odds
             FindBest(holeCards, communityCards);
         }
 
-        public string GetRealHandName()
+        public string GetRealName()
         {
             string name = "";
 
@@ -123,7 +123,7 @@ namespace holdem_odds
 
             if (realName)
             {
-                s += "(" + GetRealHandName() + ")";
+                s += "(" + GetRealName() + ")";
             }
 
             s = s.Trim();
@@ -151,7 +151,7 @@ namespace holdem_odds
 
             if (realName)
             {
-                Console.Write("(" + GetRealHandName() + ")");
+                Console.Write("(" + GetRealName() + ")");
             }
 
             if (newLine)

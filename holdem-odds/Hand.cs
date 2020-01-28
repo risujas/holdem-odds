@@ -170,8 +170,23 @@ namespace holdem_odds
             }
             else if (type == other.type)
             {
-                result = ShowdownResult.Tie;
-                // todo - break ties
+                for (int i = 0; i < cardTiers.Count; i++)
+                {
+                    if ((int)cardTiers[i][0].value > (int)other.cardTiers[i][0].value)
+                    {
+                        result = ShowdownResult.Win;
+                        break;
+                    }
+                    else if ((int)cardTiers[i][0].value < (int)other.cardTiers[i][0].value)
+                    {
+                        result = ShowdownResult.Loss;
+                        break;
+                    }
+                }
+                if (result == ShowdownResult.None)
+                {
+                    result = ShowdownResult.Tie;
+                }
             }
             else if (type < other.type)
             {

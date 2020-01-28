@@ -52,6 +52,7 @@ namespace holdem_odds
             }
             else if (type == other.type)
             {
+                result = ShowdownResult.Tie;
                 // todo - break ties
             }
             else if (type < other.type)

@@ -133,11 +133,21 @@ namespace holdem_odds
                     s += cardTiers[tier][card].GetHumanReadable();
                     s += " ";
                 }
-                if (tier != cardTiers.Count - 1)
+                if (plusSeparator)
                 {
-                    if (plusSeparator)
+                    if (tier == 0)
                     {
-                        s += "+ ";
+                        if (type == Type.HighCard || type == Type.OnePair || type == Type.ThreeOfAKind || type == Type.FourOfAKind)
+                        {
+                            s += "+ ";
+                        }
+                    }
+                    if (tier == 1)
+                    {
+                        if (type == Type.TwoPair)
+                        {
+                            s += "+ ";
+                        }
                     }
                 }
             }

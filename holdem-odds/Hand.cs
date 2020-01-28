@@ -31,8 +31,11 @@ namespace holdem_odds
         }
 
         public Type type { get; private set; }
-        public List<Card> mainCards { get; private set; }
-        public List<Card> fillerCards { get; private set; }
+        public List<Card> tier1Cards { get; private set; }
+        public List<Card> tier2Cards { get; private set; }
+        public List<Card> tier3Cards { get; private set; }
+        public List<Card> tier4Cards { get; private set; }
+        public List<Card> tier5Cards { get; private set; }
 
         public Hand()
         {
@@ -45,9 +48,9 @@ namespace holdem_odds
 
         public bool HasFillerCards()
         {
-            if (fillerCards != null)
+            if (tier2Cards != null)
             {
-                if (fillerCards.Count != 0)
+                if (tier2Cards.Count != 0)
                 {
                     return true;
                 }
@@ -58,9 +61,9 @@ namespace holdem_odds
         public string GetHumanReadable(bool plusSeparator = true, bool realName = true)
         {
             string s = "";
-            for (int i = 0; i < mainCards.Count; i++)
+            for (int i = 0; i < tier1Cards.Count; i++)
             {
-                s += mainCards[i].GetHumanReadable();
+                s += tier1Cards[i].GetHumanReadable();
                 s += " ";
             }
 
@@ -71,9 +74,9 @@ namespace holdem_odds
                     s += "+ ";
                 }
 
-                for (int i = 0; i < fillerCards.Count; i++)
+                for (int i = 0; i < tier2Cards.Count; i++)
                 {
-                    s += fillerCards[i].GetHumanReadable();
+                    s += tier2Cards[i].GetHumanReadable();
                     s += " ";
                 }
             }
@@ -86,6 +89,41 @@ namespace holdem_odds
             s = s.Trim();
 
             return s;
+        }
+
+        public void PrintHumanReadable(bool plusSeparator = true, bool realName = true, bool newLine = true)
+        {
+            string humanReadable = GetHumanReadable(plusSeparator, realName);
+
+            foreach (var mc in tier1Cards)
+            {
+                mc.PrintHumanReadable(true);
+                Console.Write(" ");
+            }
+
+            if (HasFillerCards())
+            {
+                if (plusSeparator)
+                {
+                    Console.Write("+ ");
+                }
+
+                foreach (var fc in tier2Cards)
+                {
+                    fc.PrintHumanReadable(true);
+                    Console.Write(" ");
+                }
+            }
+
+            if (realName)
+            {
+                Console.Write("(" + type.ToString() + ")");
+            }
+
+            if (newLine)
+            {
+                Console.Write("\n");
+            }
         }
 
         public ShowdownResult EvaluateAgainst(Hand other)
@@ -205,8 +243,8 @@ namespace holdem_odds
 
         private void SetCards(List<Card> mc, List<Card> fc, Type t)
         {
-            mainCards = mc;
-            fillerCards = fc;
+            tier1Cards = mc;
+            tier2Cards = fc;
             type = t;
         }
 

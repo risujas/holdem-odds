@@ -132,5 +132,12 @@ namespace holdem_odds
 
 			return name;
 		}
+
+		public void PrintHumanReadable(bool includeSuit = true)
+		{
+			SetConsoleColorToCardColor();
+			Console.Write(GetHumanReadable(true));
+			ResetConsoleColor();
+		}
 	}
 }

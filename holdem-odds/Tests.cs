@@ -44,8 +44,11 @@ namespace holdem_odds
 				}
 				Console.WriteLine("\n");
 
-				Console.WriteLine("Player 1: " + p1Hand.GetHumanReadable());
-				Console.WriteLine("Player 2: " + p2Hand.GetHumanReadable());
+				Console.Write("Player 1: ");
+				p1Hand.PrintHumanReadable(true, true, true);
+
+				Console.Write("Player 2: ");
+				p2Hand.PrintHumanReadable(true, true, true);
 
 				Console.WriteLine();
 

@@ -1,0 +1,3 @@
+- Allow specifying hole cards, community cards and villain ranges to calculate equity
+- Allow specifying the pot size and call size to calculate pot odds
+- Calculate expected value from equity and pot odds

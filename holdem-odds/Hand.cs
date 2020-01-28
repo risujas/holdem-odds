@@ -65,7 +65,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for four of a kind
-                var quads = GetFourOfAKind(allCards);
+                var quads = GetSeries(allCards, 4);
                 if (quads != null)
                 {
                     bestHand.SetCards(quads, Type.FourOfAKind);
@@ -105,7 +105,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for three of a kind
-                var trips = GetThreeOfAKind(allCards);
+                var trips = GetSeries(allCards, 3);
                 if (trips != null)
                 {
                     bestHand.SetCards(trips, Type.ThreeOfAKind);
@@ -125,7 +125,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for one pair
-                var onePair = GetOnePair(allCards);
+                var onePair = GetSeries(allCards, 2);
                 if (onePair != null)
                 {
                     bestHand.SetCards(onePair, Type.OnePair);
@@ -227,44 +227,6 @@ namespace holdem_odds
             if (spadeStraightFlush != null)
             {
                 return spadeStraightFlush;
-            }
-
-            return null;
-        }
-
-        // Returns the best 5-card four of a kind hand from the available cards
-        private static List<Card> GetFourOfAKind(List<Card> allCards)
-        {
-            List<Card> quads = null;
-
-            for (int i = (int)Card.Value.V2; i <= (int)Card.Value.VA; i++)
-            {
-                if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, (Card.Value)i) == 4)
-                {
-                    quads = GetCardsByValue(allCards, (Card.Value)i);
-                }
-            }
-
-            if (quads != null)
-            {
-                List<Card> hand = new List<Card>();
-
-                List<Card> otherCards = allCards;
-                otherCards.Remove(quads[0]);
-                otherCards.Remove(quads[1]);
-                otherCards.Remove(quads[2]);
-                otherCards.Remove(quads[3]);
-
-                otherCards = otherCards.OrderBy(o => (int)o.value).ToList();
-                while (otherCards.Count > 1)
-                {
-                    otherCards.RemoveAt(0);
-                }
-
-                hand.AddRange(quads);
-                hand.AddRange(otherCards);
-
-                return hand;
             }
 
             return null;
@@ -389,43 +351,6 @@ namespace holdem_odds
             return straightCards;
         }
 
-        // Returns the best 5-card three of a kind hand from the available cards
-        private static List<Card> GetThreeOfAKind(List<Card> allCards)
-        {
-            List<Card> trips = null;
-
-            for (int i = (int)Card.Value.V2; i <= (int)Card.Value.VA; i++)
-            {
-                if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, (Card.Value)i) == 3)
-                {
-                    trips = GetCardsByValue(allCards, (Card.Value)i);
-                }
-            }
-
-            if (trips != null)
-            {
-                List<Card> hand = new List<Card>();
-
-                List<Card> otherCards = allCards;
-                otherCards.Remove(trips[0]);
-                otherCards.Remove(trips[1]);
-                otherCards.Remove(trips[2]);
-
-                otherCards = otherCards.OrderBy(o => (int)o.value).ToList();
-                while (otherCards.Count > 2)
-                {
-                    otherCards.RemoveAt(0);
-                }
-
-                hand.AddRange(trips);
-                hand.AddRange(otherCards);
-
-                return hand;
-            }
-
-            return null;
-        }
-
         // Returns the best 5-card two pair hand from the available cards
         private static List<Card> GetTwoPair(List<Card> allCards)
         {
@@ -463,41 +388,45 @@ namespace holdem_odds
                 fullHand.AddRange(highPair);
                 fullHand.AddRange(lowPair);
                 fullHand.AddRange(otherCards);
-                return otherCards;
+                return fullHand;
             }
 
             return null;
         }
 
-        // Returns the best 5-card one pair hand from the available cards
-        private static List<Card> GetOnePair(List<Card> allCards)
+        // Returns the best 5-card (pair / trips / quads / N) from the available cards
+        private static List<Card> GetSeries(List<Card> allCards, int numCardsInSeries)
         {
-            List<Card> pair = new List<Card>();
-            bool found = false;
+            List<Card> series = null;
 
-            for (int i = 0; i < allCards.Count; i++)
+            for (int i = (int)Card.Value.V2; i <= (int)Card.Value.VA; i++)
             {
-                if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, allCards[i].value) == 2)
+                if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, (Card.Value)i) == numCardsInSeries)
                 {
-                    pair = GetCardsByValue(allCards, allCards[i].value);
-                    found = true;
+                    series = GetCardsByValue(allCards, (Card.Value)i);
                 }
             }
 
-            if (found)
+            if (series != null)
             {
-                List<Card> otherCards = allCards;
-                otherCards.Remove(pair[0]);
-                otherCards.Remove(pair[1]);
-                otherCards = otherCards.OrderBy(o => (int)o.value).ToList();
+                List<Card> hand = new List<Card>();
 
-                while (otherCards.Count > 3)
+                List<Card> otherCards = allCards;
+                for (int i = 0; i < series.Count; i++)
+                {
+                    otherCards.Remove(series[i]);
+                }
+
+                otherCards = otherCards.OrderBy(o => (int)o.value).ToList();
+                while (otherCards.Count > (5 - numCardsInSeries))
                 {
                     otherCards.RemoveAt(0);
                 }
 
-                pair.AddRange(otherCards);
-                return pair;
+                hand.AddRange(series);
+                hand.AddRange(otherCards);
+
+                return hand;
             }
 
             return null;

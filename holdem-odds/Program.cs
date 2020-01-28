@@ -75,6 +75,38 @@ namespace holdem_odds
 						break;
 				}
 
+				if (bestHand.type == Hand.Type.OnePair)
+				{
+					Console.Write("Hole cards: ");
+					holeCards[0].SetConsoleColorToCardColor();
+					Console.Write(holeCards[0].GetHumanReadable());
+					holeCards[0].ResetConsoleColor();
+					Console.Write(" ");
+					holeCards[1].SetConsoleColorToCardColor();
+					Console.Write(holeCards[1].GetHumanReadable());
+					holeCards[1].ResetConsoleColor();
+					Console.Write(" ");
+					Console.Write("Table: ");
+					for (int i = 0; i < communityCards.Count; i++)
+					{
+						communityCards[i].SetConsoleColorToCardColor();
+						Console.Write(communityCards[i].GetHumanReadable());
+						communityCards[i].ResetConsoleColor();
+						Console.Write(" ");
+					}
+					Console.Write("Hand: ");
+					for (int i = 0; i < bestHand.cards.Count; i++)
+					{
+						bestHand.cards[i].SetConsoleColorToCardColor();
+						Console.Write(bestHand.cards[i].GetHumanReadable());
+						bestHand.cards[i].ResetConsoleColor();
+						Console.Write(" ");
+					}
+					Console.Write("(" + bestHand.type.ToString() + ")");
+					Console.ReadLine();
+				}
+
+				/*
 				if (totalHands % updateInterval == 0)
 				{
 					Console.Clear();
@@ -110,6 +142,7 @@ namespace holdem_odds
 					percent = totalHighCards / (float)totalHands * 100.0f;
 					Console.WriteLine("Total high cards: " + percent + "%");
 				}
+				*/
 			}
 
 			Console.ReadLine();

@@ -45,7 +45,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for a royal flush
-                var royalFlush = GetRoyalFlush(allCards);
+                var royalFlush = GetRoyalFlush(allCards.ToList());
                 if (royalFlush != null)
                 {
                     bestHand.SetCards(royalFlush, Type.RoyalFlush);
@@ -55,7 +55,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for a straight flush
-                var straightFlush = GetStraightFlush(allCards);
+                var straightFlush = GetStraightFlush(allCards.ToList());
                 if (straightFlush != null)
                 {
                     bestHand.SetCards(straightFlush, Type.StraightFlush);
@@ -65,7 +65,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for four of a kind
-                var quads = GetSeries(allCards, 4);
+                var quads = GetSeries(allCards.ToList(), 4);
                 if (quads != null)
                 {
                     bestHand.SetCards(quads, Type.FourOfAKind);
@@ -75,7 +75,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for a full house
-                var fullHouse = GetFullHouse(allCards);
+                var fullHouse = GetFullHouse(allCards.ToList());
                 if (fullHouse != null)
                 {
                     bestHand.SetCards(fullHouse, Type.FullHouse);
@@ -85,7 +85,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for a flush
-                var flush = GetFlush(allCards);
+                var flush = GetFlush(allCards.ToList());
                 if (flush != null)
                 {
                     bestHand.SetCards(flush, Type.Flush);
@@ -95,7 +95,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for a straight
-                var straight = GetStraight(allCards, Card.Suit.NotSet);
+                var straight = GetStraight(allCards.ToList(), Card.Suit.NotSet);
                 if (straight != null)
                 {
                     bestHand.SetCards(straight, Type.Straight);
@@ -105,7 +105,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for three of a kind
-                var trips = GetSeries(allCards, 3);
+                var trips = GetSeries(allCards.ToList(), 3);
                 if (trips != null)
                 {
                     bestHand.SetCards(trips, Type.ThreeOfAKind);
@@ -115,7 +115,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for two pair
-                var twoPair = GetTwoPair(allCards);
+                var twoPair = GetTwoPair(allCards.ToList());
                 if (twoPair != null)
                 {
                     bestHand.SetCards(twoPair, Type.TwoPair);
@@ -125,7 +125,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for one pair
-                var onePair = GetSeries(allCards, 2);
+                var onePair = GetSeries(allCards.ToList(), 2);
                 if (onePair != null)
                 {
                     bestHand.SetCards(onePair, Type.OnePair);
@@ -135,7 +135,7 @@ namespace holdem_odds
             if (bestHand.type == Type.None)
             {
                 // Check for a high card
-                bestHand.SetCards(GetHighCard(allCards), Type.HighCard);
+                bestHand.SetCards(GetHighCard(allCards.ToList()), Type.HighCard);
             }
 
             return bestHand;

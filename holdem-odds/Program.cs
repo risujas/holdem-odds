@@ -7,8 +7,10 @@ namespace holdem_odds
 	{
 		static void Main(string[] args)
 		{
+			Deck deck = new Deck();
+
 			int totalHands = 0;
-			const int maxHands = 500000000;
+			const long maxHands = 5000000000;
 			const int updateInterval = 50000;
 
 			int totalRoyalFlushes = 0;
@@ -25,8 +27,7 @@ namespace holdem_odds
 			while (totalHands < maxHands)
 			{
 				totalHands++;
-
-				Deck deck = new Deck();
+				deck.Reset();
 				deck.Shuffle();
 
 				List<Card> holeCards = new List<Card>();
@@ -75,7 +76,7 @@ namespace holdem_odds
 						break;
 				}
 
-				if (bestHand.type == Hand.Type.OnePair)
+				/*if (bestHand.type == Hand.Type.OnePair)
 				{
 					Console.Write("Hole cards: ");
 					holeCards[0].SetConsoleColorToCardColor();
@@ -105,44 +106,45 @@ namespace holdem_odds
 					Console.Write("(" + bestHand.type.ToString() + ")");
 					Console.ReadLine();
 				}
+				//*/
 
-				/*
+				///*
 				if (totalHands % updateInterval == 0)
 				{
 					Console.Clear();
 					Console.WriteLine("Total hands: " + totalHands);
 
 					float percent = totalRoyalFlushes / (float)totalHands * 100.0f;
-					Console.WriteLine("Total royal flushes: " + percent + "%");
+					Console.WriteLine("Total royal flushes: " + percent + "% - " + totalRoyalFlushes);
 
 					percent = totalStraightFlushes / (float)totalHands * 100.0f;
-					Console.WriteLine("Total straight flushes: " + percent + "%");
+					Console.WriteLine("Total straight flush: " + percent + "% - " + totalStraightFlushes);
 
 					percent = totalFourOfAKind / (float)totalHands * 100.0f;
-					Console.WriteLine("Total quads: " + percent + "%");
+					Console.WriteLine("Total four of a kind: " + percent + "% - " + totalFourOfAKind);
 
 					percent = totalFullHouses / (float)totalHands * 100.0f;
-					Console.WriteLine("Total full houses: " + percent + "%");
+					Console.WriteLine("Total full house: " + percent + "% - " + totalFullHouses);
 
 					percent = totalFlushes / (float)totalHands * 100.0f;
-					Console.WriteLine("Total flushes: " + percent + "%");
+					Console.WriteLine("Total flush: " + percent + "% - " + totalFlushes);
 
 					percent = totalStraights / (float)totalHands * 100.0f;
-					Console.WriteLine("Total straights: " + percent + "%");
+					Console.WriteLine("Total straight: " + percent + "% - " + totalStraights);
 
 					percent = totalThreeOfAKind / (float)totalHands * 100.0f;
-					Console.WriteLine("Total trips: " + percent + "%");
+					Console.WriteLine("Total three of a kind: " + percent + "% - " + totalThreeOfAKind);
 
 					percent = totalTwoPair / (float)totalHands * 100.0f;
-					Console.WriteLine("Total two pair: " + percent + "%");
+					Console.WriteLine("Total two pair: " + percent + "% - " + totalTwoPair);
 
 					percent = totalOnePair / (float)totalHands * 100.0f;
-					Console.WriteLine("Total one pair: " + percent + "%");
+					Console.WriteLine("Total one pair: " + percent + "% - " + totalOnePair);
 
 					percent = totalHighCards / (float)totalHands * 100.0f;
-					Console.WriteLine("Total high cards: " + percent + "%");
+					Console.WriteLine("Total high cards: " + percent + "% - " + totalHighCards);
 				}
-				*/
+				//*/
 			}
 
 			Console.ReadLine();

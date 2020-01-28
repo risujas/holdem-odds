@@ -19,19 +19,19 @@ namespace holdem_odds
 		{
 			NotSet = 0,
 
-			Deuce = 2,
-			Three = 3,
-			Four = 4,
-			Five = 5,
-			Six = 6,
-			Seven = 7,
-			Eight = 8,
-			Nine = 9,
-			Ten = 10,
-			Jack = 11,
-			Queen = 12,
-			King = 13,
-			Ace = 14
+			V2 = 2,
+			V3 = 3,
+			V4 = 4,
+			V5 = 5,
+			V6 = 6,
+			V7 = 7,
+			V8 = 8,
+			V9 = 9,
+			VT = 10,
+			VJ = 11,
+			VQ = 12,
+			VK = 13,
+			VA = 14
 		}
 
 		public Suit suit { get; }
@@ -57,7 +57,7 @@ namespace holdem_odds
 		{
 			if (plural)
 			{
-				if (value == Value.Six)
+				if (value == Value.V6)
 				{
 					return value.ToString() + "es";
 				}
@@ -68,6 +68,56 @@ namespace holdem_odds
 			}
 
 			return value.ToString();
+		}
+
+		public string GetCardValueStringShort()
+		{
+			string s = "";
+
+			switch (value)
+			{
+				case Value.V2:
+					s = "2";
+					break;
+				case Value.V3:
+					s = "3";
+					break;
+				case Value.V4:
+					s = "4";
+					break;
+				case Value.V5:
+					s = "5";
+					break;
+				case Value.V6:
+					s = "6";
+					break;
+				case Value.V7:
+					s = "7";
+					break;
+				case Value.V8:
+					s = "8";
+					break;
+				case Value.V9:
+					s = "9";
+					break;
+				case Value.VT:
+					s = "T";
+					break;
+				case Value.VJ:
+					s = "J";
+					break;
+				case Value.VQ:
+					s = "Q";
+					break;
+				case Value.VK:
+					s = "K";
+					break;
+				case Value.VA:
+					s = "A";
+					break;
+			}
+
+			return s;
 		}
 
 		public void SetConsoleColorToCardColor()
@@ -117,19 +167,19 @@ namespace holdem_odds
 			{
 				switch (value)
 				{
-					case Value.Ten:
+					case Value.VT:
 						name += "T";
 						break;
-					case Value.Jack:
+					case Value.VJ:
 						name += "J";
 						break;
-					case Value.Queen:
+					case Value.VQ:
 						name += "Q";
 						break;
-					case Value.King:
+					case Value.VK:
 						name += "K";
 						break;
-					case Value.Ace:
+					case Value.VA:
 						name += "A";
 						break;
 				}

@@ -352,19 +352,19 @@ namespace holdem_odds
 
         private List<Card> GetRoyalFlushBySuit(List<Card> allCards, Card.Suit suit)
         {
-            if (GetNumberOfMatchingCards(allCards, suit, Card.Value.Ten) == 1 &&
-                GetNumberOfMatchingCards(allCards, suit, Card.Value.Jack) == 1 &&
-                GetNumberOfMatchingCards(allCards, suit, Card.Value.Queen) == 1 &&
-                GetNumberOfMatchingCards(allCards, suit, Card.Value.King) == 1 &&
-                GetNumberOfMatchingCards(allCards, suit, Card.Value.Ace) == 1)
+            if (GetNumberOfMatchingCards(allCards, suit, Card.Value.VT) == 1 &&
+                GetNumberOfMatchingCards(allCards, suit, Card.Value.VJ) == 1 &&
+                GetNumberOfMatchingCards(allCards, suit, Card.Value.VQ) == 1 &&
+                GetNumberOfMatchingCards(allCards, suit, Card.Value.VK) == 1 &&
+                GetNumberOfMatchingCards(allCards, suit, Card.Value.VA) == 1)
             {
                 List<Card> royalFlushCards = new List<Card>();
 
-                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.Ace));
-                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.King));
-                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.Queen));
-                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.Jack));
-                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.Ten));
+                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.VA));
+                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.VK));
+                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.VQ));
+                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.VJ));
+                royalFlushCards.Add(GetMatchingCard(allCards, suit, Card.Value.VT));
 
                 return royalFlushCards;
             }
@@ -411,7 +411,7 @@ namespace holdem_odds
             List<Card> trips = null;
             List<Card> pair = null;
 
-            for (int i = (int)Card.Value.Deuce; i <= (int)Card.Value.Ace; i++)
+            for (int i = (int)Card.Value.V2; i <= (int)Card.Value.VA; i++)
             {
                 if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, (Card.Value)i) == 3)
                 {
@@ -479,17 +479,17 @@ namespace holdem_odds
             List<Card> straightCards = null;
             List<Card> selection = new List<Card>();
 
-            if (    GetNumberOfMatchingCards(allCards, suit, Card.Value.Ace) > 0 &&
-                    GetNumberOfMatchingCards(allCards, suit, Card.Value.Deuce) > 0 &&
-                    GetNumberOfMatchingCards(allCards, suit, Card.Value.Three) > 0 &&
-                    GetNumberOfMatchingCards(allCards, suit, Card.Value.Four) > 0 &&
-                    GetNumberOfMatchingCards(allCards, suit, Card.Value.Five) > 0)
+            if (    GetNumberOfMatchingCards(allCards, suit, Card.Value.VA) > 0 &&
+                    GetNumberOfMatchingCards(allCards, suit, Card.Value.V2) > 0 &&
+                    GetNumberOfMatchingCards(allCards, suit, Card.Value.V3) > 0 &&
+                    GetNumberOfMatchingCards(allCards, suit, Card.Value.V4) > 0 &&
+                    GetNumberOfMatchingCards(allCards, suit, Card.Value.V5) > 0)
             {
-                selection.Add(GetMatchingCard(allCards, suit, Card.Value.Ace));
-                selection.Add(GetMatchingCard(allCards, suit, Card.Value.Deuce));
-                selection.Add(GetMatchingCard(allCards, suit, Card.Value.Three));
-                selection.Add(GetMatchingCard(allCards, suit, Card.Value.Four));
-                selection.Add(GetMatchingCard(allCards, suit, Card.Value.Five));
+                selection.Add(GetMatchingCard(allCards, suit, Card.Value.VA));
+                selection.Add(GetMatchingCard(allCards, suit, Card.Value.V2));
+                selection.Add(GetMatchingCard(allCards, suit, Card.Value.V3));
+                selection.Add(GetMatchingCard(allCards, suit, Card.Value.V4));
+                selection.Add(GetMatchingCard(allCards, suit, Card.Value.V5));
             }
 
             for (int i = 0; i < allCards.Count; i++)
@@ -528,7 +528,7 @@ namespace holdem_odds
             List<Card> highPair = null;
             List<Card> lowPair = null;
 
-            for (int i = (int)Card.Value.Deuce; i <= (int)Card.Value.Ace; i++)
+            for (int i = (int)Card.Value.V2; i <= (int)Card.Value.VA; i++)
             {
                 if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, (Card.Value)i) == 2)
                 {
@@ -570,7 +570,7 @@ namespace holdem_odds
         {
             List<Card> series = null;
 
-            for (int i = (int)Card.Value.Deuce; i <= (int)Card.Value.Ace; i++)
+            for (int i = (int)Card.Value.V2; i <= (int)Card.Value.VA; i++)
             {
                 if (GetNumberOfMatchingCards(allCards, Card.Suit.NotSet, (Card.Value)i) == numCardsInSeries)
                 {

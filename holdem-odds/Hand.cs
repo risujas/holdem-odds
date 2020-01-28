@@ -165,7 +165,20 @@ namespace holdem_odds
                 {
                     if (plusSeparator)
                     {
-                        Console.Write("+ ");
+                        if (tier == 0)
+                        {
+                            if (type == Type.HighCard || type == Type.OnePair || type == Type.ThreeOfAKind || type == Type.FourOfAKind)
+                            {
+                                Console.Write("+ ");
+                            }
+                        }
+                        if (tier == 1)
+                        {
+                            if (type == Type.TwoPair)
+                            {
+                                Console.Write("+ ");
+                            }
+                        }
                     }
                 }
             }

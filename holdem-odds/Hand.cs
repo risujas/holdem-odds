@@ -22,6 +22,14 @@ namespace holdem_odds
             RoyalFlush
         }
 
+        public enum ShowdownResult
+        {
+            None = -1,
+            Loss = 0,
+            Win = 1,
+            Tie = 2
+        }
+
         public Type type { get; private set; }
         public List<Card> cards { get; private set; }
 
@@ -32,6 +40,26 @@ namespace holdem_odds
                    cards[2].GetHumanReadable() + " " + 
                    cards[3].GetHumanReadable() + " " + 
                    cards[4].GetHumanReadable();
+        }
+
+        public ShowdownResult EvaluateAgainst(Hand other)
+        {
+            ShowdownResult result = ShowdownResult.None;
+
+            if (type > other.type)
+            {
+                result = ShowdownResult.Win;
+            }
+            else if (type == other.type)
+            {
+                // todo - break ties
+            }
+            else if (type < other.type)
+            {
+                result = ShowdownResult.Loss;
+            }
+
+            return result;
         }
 
         public static Hand FindBest(List<Card> holeCards, List<Card> communityCards)

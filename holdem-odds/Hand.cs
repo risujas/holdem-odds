@@ -161,23 +161,20 @@ namespace holdem_odds
                     cardTiers[tier][card].PrintHumanReadable();
                     Console.Write(" ");
                 }
-                if (tier != cardTiers.Count - 1)
+                if (plusSeparator)
                 {
-                    if (plusSeparator)
+                    if (tier == 0)
                     {
-                        if (tier == 0)
+                        if (type == Type.HighCard || type == Type.OnePair || type == Type.ThreeOfAKind || type == Type.FourOfAKind)
                         {
-                            if (type == Type.HighCard || type == Type.OnePair || type == Type.ThreeOfAKind || type == Type.FourOfAKind)
-                            {
-                                Console.Write("+ ");
-                            }
+                            Console.Write("+ ");
                         }
-                        if (tier == 1)
+                    }
+                    if (tier == 1)
+                    {
+                        if (type == Type.TwoPair)
                         {
-                            if (type == Type.TwoPair)
-                            {
-                                Console.Write("+ ");
-                            }
+                            Console.Write("+ ");
                         }
                     }
                 }

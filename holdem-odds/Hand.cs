@@ -210,7 +210,6 @@ namespace holdem_odds
             type = t;
         }
 
-        // Returns the best 5-card royal flush hand from the available cards
         private List<Card> GetRoyalFlush(List<Card> allCards)
         {
             List<Card> royalFlushCards = null;
@@ -265,7 +264,6 @@ namespace holdem_odds
             return null;
         }
 
-        // Returns the best 5-card straight flush hand from the available cards
         private List<Card> GetStraightFlush(List<Card> allCards)
         {
             List<Card> clubStraightFlush = GetStraight(allCards, Card.Suit.Clubs);
@@ -295,7 +293,6 @@ namespace holdem_odds
             return null;
         }
 
-        // Returns the best 5-card full house hand from the available cards
         private List<Card> GetFullHouse(List<Card> allCards)
         {
             List<Card> fullHouse = null;
@@ -324,7 +321,6 @@ namespace holdem_odds
             return fullHouse;
         }
 
-        // Returns the best 5-card flush hand from the available cards
         private List<Card> GetFlush(List<Card> allCards)
         {
             List<Card> flushCards = null;
@@ -365,7 +361,6 @@ namespace holdem_odds
             return flushCards;
         }
 
-        // Returns the best 5-card straight hand from the available cards
         private List<Card> GetStraight(List<Card> allCards, Card.Suit suit = Card.Suit.NotSet)
         {
             List<Card> straightCards = null;
@@ -414,7 +409,6 @@ namespace holdem_odds
             return straightCards;
         }
 
-        // Returns the best 5-card two pair hand from the available cards
         private List<Card> GetTwoPair(List<Card> allCards)
         {
             List<Card> highPair = null;
@@ -457,7 +451,6 @@ namespace holdem_odds
             return null;
         }
 
-        // Returns the best 5-card (pair / trips / quads / N) from the available cards
         private List<Card> GetSeries(List<Card> allCards, int numCardsInSeries)
         {
             List<Card> series = null;
@@ -495,7 +488,6 @@ namespace holdem_odds
             return null;
         }
 
-        // Returns the best 5-card high card hand from the available cards
         private List<Card> GetHighCard(List<Card> allCards)
         {
             allCards = allCards.OrderBy(o => (int)o.value).ToList();

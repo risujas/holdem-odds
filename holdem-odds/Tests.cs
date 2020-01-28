@@ -55,11 +55,11 @@ namespace holdem_odds
 				Hand.ShowdownResult result = p1Hand.EvaluateAgainst(p2Hand);
 				if (result == Hand.ShowdownResult.Loss)
 				{
-					Console.WriteLine("Player 1 loses.");
+					Console.WriteLine("Player 2 wins.");
 				}
 				else if (result == Hand.ShowdownResult.Tie)
 				{
-					Console.WriteLine("Player 1 ties with player 2.");
+					Console.WriteLine("It's a chop.");
 				}
 				else if (result == Hand.ShowdownResult.Win)
 				{

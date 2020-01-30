@@ -7,7 +7,7 @@ namespace holdem_odds
 	{
 		static void Main(string[] args)
 		{
-			Tests.TestGame();
+			Tests.EquityTest.Run();
 		}
 	}
 }

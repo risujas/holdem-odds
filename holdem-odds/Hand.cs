@@ -425,21 +425,21 @@ namespace holdem_odds
             List<Card> diamondStraightFlush = GetStraight(allCards, Card.Suit.Diamonds);
             if (diamondStraightFlush != null)
             {
-                clubStraightFlush.Reverse();
+                diamondStraightFlush.Reverse();
                 return diamondStraightFlush;
             }
 
             List<Card> heartStraightFlush = GetStraight(allCards, Card.Suit.Hearts);
             if (heartStraightFlush != null)
             {
-                clubStraightFlush.Reverse();
+                heartStraightFlush.Reverse();
                 return heartStraightFlush;
             }
 
             List<Card> spadeStraightFlush = GetStraight(allCards, Card.Suit.Spades);
             if (spadeStraightFlush != null)
             {
-                clubStraightFlush.Reverse();
+                spadeStraightFlush.Reverse();
                 return spadeStraightFlush;
             }
 

@@ -6,6 +6,101 @@ namespace holdem_odds
 {
     class Tests
     {
+		public static class EquityTest
+		{
+			private static Dictionary<List<Card>, float> winsByCards = new Dictionary<List<Card>, float>();
+
+			public static void Run()
+			{
+				for (Card.Value i = Card.Value.V2; i <= Card.Value.VA; i++)
+				{
+					for (Card.Value j = Card.Value.V2; j <= Card.Value.VA; j++)
+					{
+						List<Card> holeCards = new List<Card>();
+
+						Card oc1 = new Card(Card.Suit.Hearts, i);
+						Card oc2 = new Card(Card.Suit.Spades, j);
+
+						holeCards.Add(oc1);
+						holeCards.Add(oc2);
+
+						bool alreadyDone = false;
+
+						foreach (var x in winsByCards)
+						{
+							if (x.Key[0].value == oc1.value && x.Key[1].value == oc2.value)
+							{
+								alreadyDone = true;
+								break;
+							}
+
+							if (x.Key[1].value == oc1.value && x.Key[0].value == oc2.value)
+							{
+								alreadyDone = true;
+								break;
+							}
+						}
+
+						if (!alreadyDone)
+						{
+							SimulateWinrate(holeCards, 10000);
+						}
+					}
+				}
+
+				winsByCards = winsByCards.OrderBy(x => x.Value).ToDictionary(pair => pair.Key, pair => pair.Value);
+				var reversed = winsByCards.Reverse();
+
+				foreach(var hc in reversed)
+				{
+					hc.Key[0].PrintHumanReadable(false);
+					hc.Key[1].PrintHumanReadable(false);
+					Console.WriteLine(" - " + hc.Value.ToString("F") + "%");
+				}
+			}
+
+			private static void SimulateWinrate(List<Card> hc, int numTests)
+			{
+				int numWins = 0;
+
+				for (int i = 0; i < numTests; i++)
+				{
+					Deck deck = new Deck();
+					deck.RemoveCard(hc[0]);
+					deck.RemoveCard(hc[1]);
+					deck.Shuffle();
+
+					List<Card> p2Cards = new List<Card>();
+					p2Cards.Add(deck.DrawNextCard());
+					p2Cards.Add(deck.DrawNextCard());
+
+					List<Card> communityCards = new List<Card>();
+					communityCards.Add(deck.DrawNextCard());
+					communityCards.Add(deck.DrawNextCard());
+					communityCards.Add(deck.DrawNextCard());
+					communityCards.Add(deck.DrawNextCard());
+					communityCards.Add(deck.DrawNextCard());
+
+					Hand p1hand = new Hand(hc, communityCards);
+					Hand p2hand = new Hand(p2Cards, communityCards);
+
+					Hand.ShowdownResult result = p1hand.EvaluateAgainst(p2hand);
+
+					if (result == Hand.ShowdownResult.Win)
+					{
+						numWins++;
+					}
+				}
+
+				float winRate = numWins / (float)numTests * 100.0f;
+
+				if (!winsByCards.ContainsKey(hc))
+				{
+					winsByCards.Add(hc, winRate);
+				}
+			}
+		}
+
 		public static void TestGame()
 		{
 			while (true)

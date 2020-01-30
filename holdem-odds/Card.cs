@@ -258,7 +258,7 @@ namespace holdem_odds
 		public void PrintHumanReadable(bool includeSuit = true)
 		{
 			SetConsoleColorToCardColor();
-			Console.Write(GetHumanReadable(true));
+			Console.Write(GetHumanReadable(includeSuit));
 			ResetConsoleColor();
 		}
 	}

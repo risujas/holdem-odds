@@ -80,6 +80,14 @@ namespace holdem_odds
 			return card;
 		}
 
+		public void RemoveCard(Card c)
+		{
+			if (cards.Contains(c))
+			{
+				cards.Remove(c);
+			}
+		}
+
 		public void PrintInfo()
 		{
 			Console.WriteLine("Cards remaining in the deck: " + cards.Count);

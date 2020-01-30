@@ -43,7 +43,7 @@ namespace holdem_odds
 
 						if (!alreadyDone)
 						{
-							SimulateWinrate(holeCards, 10000);
+							SimulateWinrate(holeCards, 5000);
 						}
 					}
 				}
@@ -51,17 +51,24 @@ namespace holdem_odds
 				winsByCards = winsByCards.OrderBy(x => x.Value).ToDictionary(pair => pair.Key, pair => pair.Value);
 				var reversed = winsByCards.Reverse();
 
+				Console.Clear();
+
 				foreach(var hc in reversed)
 				{
 					hc.Key[0].PrintHumanReadable(false);
 					hc.Key[1].PrintHumanReadable(false);
-					Console.WriteLine(" - " + hc.Value.ToString("F") + "%");
+
+					Console.WriteLine(" - " + (int)hc.Value + "%");
 				}
 			}
 
 			private static void SimulateWinrate(List<Card> hc, int numTests)
 			{
 				int numWins = 0;
+
+				hc[0].PrintHumanReadable();
+				hc[1].PrintHumanReadable();
+				Console.Write(" - ");
 
 				for (int i = 0; i < numTests; i++)
 				{
@@ -93,6 +100,7 @@ namespace holdem_odds
 				}
 
 				float winRate = numWins / (float)numTests * 100.0f;
+				Console.WriteLine((int)winRate + "%");
 
 				if (!winsByCards.ContainsKey(hc))
 				{

@@ -43,7 +43,7 @@ namespace holdem_odds
 
 						if (!alreadyDone)
 						{
-							SimulateWinrate(holeCards, 5000);
+							SimulateWinrate(holeCards, 1000);
 						}
 					}
 				}
@@ -80,6 +80,8 @@ namespace holdem_odds
 					List<Card> p2Cards = new List<Card>();
 					p2Cards.Add(deck.DrawNextCard());
 					p2Cards.Add(deck.DrawNextCard());
+					//p2Cards.Add(deck.DrawSpecificCard(Card.Suit.Clubs, Card.Value.V2));
+					//p2Cards.Add(deck.DrawSpecificCard(Card.Suit.Diamonds, Card.Value.V2));
 
 					List<Card> communityCards = new List<Card>();
 					communityCards.Add(deck.DrawNextCard());

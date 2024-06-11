@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace holdem_odds
 {
-	class Program
+	internal class Program
 	{
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
-			Tests.EquityTest.Run();
+			Tests.TestGame();
 		}
 	}
 }

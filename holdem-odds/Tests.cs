@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace holdem_odds
 {
-    class Tests
-    {
+	internal class Tests
+	{
 		public static class EquityTest
 		{
 			private static Dictionary<List<Card>, float> winsByCards = new Dictionary<List<Card>, float>();
@@ -53,7 +53,7 @@ namespace holdem_odds
 
 				Console.Clear();
 
-				foreach(var hc in reversed)
+				foreach (var hc in reversed)
 				{
 					hc.Key[0].PrintHumanReadable(false);
 					hc.Key[1].PrintHumanReadable(false);
@@ -306,8 +306,8 @@ namespace holdem_odds
 			Console.ReadLine();
 		}
 
-        public static void TestCardRandomness(int maxDraws, int updateInterval)
-        {
+		public static void TestCardRandomness(int maxDraws, int updateInterval)
+		{
 			Dictionary<string, int> drawnCards = new Dictionary<string, int>();
 
 			Deck deck = new Deck();
@@ -360,5 +360,5 @@ namespace holdem_odds
 
 			Console.ReadLine();
 		}
-    }
+	}
 }
